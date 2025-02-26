@@ -17,6 +17,8 @@ void Game::Run()
 	InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE);
 	SetTargetFPS(FPS);
 
+	map.LoadAssets();
+
 	while(!WindowShouldClose())
 	{
 		Update();
@@ -29,16 +31,15 @@ void Game::Run()
 void Game::Draw()
 {
 	BeginDrawing();
-
 	ClearBackground(BLACK);
 
-	DrawRectangle(100, 100, 100, 100, RED);
+	map.Draw();
 
 	EndDrawing();
 }
 void Game::Update()
 {
-	// Fullscreen
+	// Screen resizing
 	if(IsKeyPressed(KEY_LEFT_ALT) && IsKeyPressed(KEY_ENTER))
 	{
 		int Monitor = GetCurrentMonitor();
@@ -50,4 +51,7 @@ void Game::Update()
 
 		ToggleFullscreen();
 	}
+
+	if (IsKeyPressed(KEY_SPACE))
+		map.Generate();
 }

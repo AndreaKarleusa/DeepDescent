@@ -1,4 +1,6 @@
 #pragma once
+#include "raylib.h"
+#include "Map.hpp"
 
 class Game
 {
@@ -7,6 +9,8 @@ private:
 	const int SCREEN_WIDTH = 1024;
 	const int SCREEN_HEIGHT = 720;
 	const int FPS = 60;
+
+	Map map;
 public:
 	Game();
 	~Game();
