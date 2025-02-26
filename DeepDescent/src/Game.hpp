@@ -18,5 +18,4 @@ public:
 	void Run();
 	void Draw();
 	void Update();
-
 };

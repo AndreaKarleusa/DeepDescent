@@ -39,15 +39,19 @@ void Game::Draw()
 }
 void Game::Update()
 {
-	// Screen resizing
-	if(IsKeyPressed(KEY_LEFT_ALT) && IsKeyPressed(KEY_ENTER))
+	// Screen resizing - TEMPORARY KEY BINDING
+	if(IsKeyPressed(KEY_P))
 	{
-		int Monitor = GetCurrentMonitor();
+		int monitor = GetCurrentMonitor();
 
 		if (IsWindowFullscreen())
+		{
 			SetWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+		}
 		else
-			SetWindowSize(GetMonitorWidth(Monitor), GetMonitorHeight(Monitor));
+		{
+			SetWindowSize(GetMonitorWidth(monitor), GetMonitorHeight(monitor));
+		}
 
 		ToggleFullscreen();
 	}

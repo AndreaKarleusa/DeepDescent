@@ -13,12 +13,16 @@ void Map::LoadAssets()
 	
 void Map::Draw()
 {
+	const int screenWidth = GetScreenWidth();
+	const int screenHeight = GetScreenHeight();
+
 	for (int i = 0; i < MAP_SIZE; i++)
 	{
 		for (int j = 0; j < MAP_SIZE; j++)
 		{
-			Rectangle frameRec = { (float)(tileData[i][j] * TILE_SIZE), 0.0f, TILE_SIZE, TILE_SIZE};
-			Vector2 position = { j * TILE_SIZE, i * TILE_SIZE };
+			Rectangle frameRec = { (tileSprites[i][j] * TILE_SIZE, 0.0f, TILE_SIZE, TILE_SIZE};
+			Vector2 position = { (j * TILE_SIZE) + (screenWidth / 2) - (MAP_SIZE * TILE_SIZE / 2),
+								 (i * TILE_SIZE) + (screenHeight / 2) - (MAP_SIZE * TILE_SIZE / 2) };
 
 			DrawTextureRec(textureSheet, frameRec, position, WHITE);
 		}
@@ -31,7 +35,12 @@ void Map::Generate()
 	{
 		for (int j = 0; j < MAP_SIZE; j++)
 		{
-			tileData[i][j] = RandomInt(4);
+			int tile = RandomInt(4); // maybe change the hard coded value to a static const variable
+
+			// if the tile is walkable
+
+			tileSprites[i][j] = tile;
+			collisionBoxes[i][j] = (tile > 2);
 		}
 	}
 }
