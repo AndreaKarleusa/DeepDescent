@@ -3,14 +3,8 @@
 
 #include <iostream>
 
-Game::Game()
-{
-	std::cout << "Game has started!\n";
-}
-Game::~Game()
-{
-	std::cout << "Game has ended!\n";
-}
+Game::Game(){}
+Game::~Game(){}
 
 void Game::Run()
 {
@@ -18,6 +12,9 @@ void Game::Run()
 	SetTargetFPS(FPS);
 
 	map.LoadAssets();
+	player.LoadAssets();
+
+	StartNewLevel(); // takes care of player and enemy spawining, map gen etc...
 
 	while(!WindowShouldClose())
 	{
@@ -34,28 +31,36 @@ void Game::Draw()
 	ClearBackground(BLACK);
 
 	map.Draw();
+	player.Draw();
 
 	EndDrawing();
 }
 void Game::Update()
 {
-	// Screen resizing - TEMPORARY KEY BINDING
+	// TEMPORARY KEY BINDING
 	if(IsKeyPressed(KEY_P))
 	{
-		int monitor = GetCurrentMonitor();
-
-		if (IsWindowFullscreen())
-		{
-			SetWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-		}
+		if (IsWindowFullscreen()){ SetWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT); }
 		else
 		{
+			int monitor = GetCurrentMonitor();
 			SetWindowSize(GetMonitorWidth(monitor), GetMonitorHeight(monitor));
 		}
 
 		ToggleFullscreen();
+		map.CalculateOffset();
 	}
 
+	player.Update();
+
 	if (IsKeyPressed(KEY_SPACE))
-		map.Generate();
+		StartNewLevel();
+}
+
+void Game::StartNewLevel()
+{
+	map.Generate();
+	const auto spawnPos = map.GetEmptyTile();
+
+	player.Spawn(spawnPos);
 }

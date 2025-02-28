@@ -130,10 +130,13 @@
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Map.cpp" />
+    <ClCompile Include="src\Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Game.hpp" />
     <ClInclude Include="src\Map.hpp" />
+    <ClInclude Include="src\Player.hpp" />
+    <ClInclude Include="src\Settings.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\Spritesheet512.png" />

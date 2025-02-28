@@ -24,12 +24,21 @@
     <ClCompile Include="src\Map.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Game.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Map.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Player.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Settings.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

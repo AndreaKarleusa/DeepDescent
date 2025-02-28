@@ -1,6 +1,6 @@
 #pragma once
 #include "raylib.h"
-#include <deque>
+#include "Settings.hpp"
 
 // LAZY FLOOD FILL for ore veins
 // min veins = 2, max veins = 5
@@ -10,15 +10,14 @@
 //that favours lower numbers in a range (log distribution)
 class Map
 {
-private:
-	static const int MAP_SIZE = 8;
-	static const int TILE_SIZE = 64;
+public:
 	
 	int tileSprites [MAP_SIZE][MAP_SIZE];
 	bool collisionBoxes [MAP_SIZE][MAP_SIZE];
 
 	Image spriteSheet;
 	Texture2D textureSheet;
+	Vector2 offset = { 0,0 };
 
 public:
 	Map();
@@ -27,10 +26,13 @@ public:
 	void LoadAssets();
 	void Draw();
 	void Update(); // listen for player hits and other events
+	
 	void Generate();
-
-	bool DamageTile(const Vector2& tilePos, const int& dmg);
-
-private:
+	void CalculateOffset();
 	int RandomInt(const int& maxInt);
+	
+	Vector2 GetEmptyTile();
+	Vector2 ToGlobalCords(int x, int y);
+	
+	bool DamageTile(const Vector2& tilePos, const int& dmg);
 };
