@@ -15,10 +15,11 @@ public:
 	Texture2D textureSheet;
 	Rectangle playerSprite;
 	Rectangle toolSprite;
+	Rectangle hitbox;
 
 	Vector2 position;
 	Vector2 direction;
-	const float speed = 2.0f;
+	const float speed = 2.5f;
 
 	const int MAX_HEALTH = 15;
 	const int MAX_ENERGY = 3;

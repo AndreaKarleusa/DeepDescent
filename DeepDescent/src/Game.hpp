@@ -7,6 +7,7 @@
 class Game
 {
 public:
+	Camera2D camera;
 	Map map;
 	Player player;
 public:
@@ -16,6 +17,8 @@ public:
 	void Run();
 	void Draw();
 	void Update();
+	void LoadAssets();
+	void CameraSetup();
 
 	/*
 		- generates map

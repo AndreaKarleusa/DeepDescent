@@ -11,7 +11,6 @@ void Map::LoadAssets()
 	spriteSheet = LoadImage("assets/Spritesheet512.png");
 	textureSheet = LoadTextureFromImage(spriteSheet);
 	UnloadImage(spriteSheet);
-	CalculateOffset();
 }
 	
 void Map::Draw()
@@ -21,7 +20,7 @@ void Map::Draw()
 		for (int j = 0; j < MAP_SIZE; j++)
 		{
 			Rectangle frameRec = { tileSprites[i][j] * TILE_SIZE, 0, TILE_SIZE, TILE_SIZE};
-			Vector2 position = { j*TILE_SIZE + offset.x, i*TILE_SIZE + offset.y };
+			Vector2 position = { j*TILE_SIZE, i*TILE_SIZE };
 
 			DrawTextureRec(textureSheet, frameRec, position, WHITE);
 		}
@@ -42,47 +41,18 @@ void Map::Generate()
 	}
 }
 
-// the "magic" -1 is for the array offset
-/*
 
-
-
-
-PLAYER DOESNT SPAWN ON EMPTY
-
-
-
-
-
-*/
 Vector2 Map::GetEmptyTile()
 {
-	int x = RandomInt(MAP_SIZE-1);   
-	int y = RandomInt(MAP_SIZE-1);
+	int x, y = 0;
 
-
-	while (collisionBoxes[y][x])
-	{
+	do{
 		x = RandomInt(MAP_SIZE-1);
 		y = RandomInt(MAP_SIZE-1);
-	}
 
-	std::cout << "Player x,y: " << x << ", " << y << endl;
+	} while (collisionBoxes[y][x]);
 
-	return Vector2{ x*TILE_SIZE + offset.x, y*TILE_SIZE + offset.y};
-}
-
-void Map::CalculateOffset()
-{
-	const int screenWidth = GetScreenWidth();
-	const int screenHeight = GetScreenHeight();
-
-	// offset = (half of width/height) - (half of map size)
-	offset = {
-		(float)(screenWidth / 2) - (MAP_SIZE * TILE_SIZE / 2),
-		(float)(screenHeight / 2) - (MAP_SIZE * TILE_SIZE / 2)
-	};
-
+	return Vector2{ (float)(x*TILE_SIZE), (float)(y*TILE_SIZE) };
 }
 
 int Map::RandomInt(const int& maxInt)

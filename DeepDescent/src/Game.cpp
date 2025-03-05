@@ -10,11 +10,10 @@ void Game::Run()
 {
 	InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE);
 	SetTargetFPS(FPS);
+	CameraSetup();
+	LoadAssets();
 
-	map.LoadAssets();
-	player.LoadAssets();
-
-	StartNewLevel(); // takes care of player and enemy spawining, map gen etc...
+	StartNewLevel();
 
 	while(!WindowShouldClose())
 	{
@@ -25,14 +24,30 @@ void Game::Run()
 	CloseWindow();
 }
 
+void Game::LoadAssets()
+{
+	map.LoadAssets();
+	player.LoadAssets();
+}
+
+void Game::CameraSetup()
+{
+	camera.offset = {(float)GetScreenWidth()/2, (float)GetScreenHeight()/2};
+	camera.target = {MAP_SIZE*TILE_SIZE/2, MAP_SIZE*TILE_SIZE/2};
+	camera.zoom = 1.0f;
+	camera.rotation = 0.0f;
+}
+
 void Game::Draw()
 {
 	BeginDrawing();
-	ClearBackground(BLACK);
+	BeginMode2D(camera);
 
-	map.Draw();
-	player.Draw();
+		ClearBackground(BLACK);
+		map.Draw();
+		player.Draw();
 
+	EndMode2D();
 	EndDrawing();
 }
 void Game::Update()
@@ -48,7 +63,7 @@ void Game::Update()
 		}
 
 		ToggleFullscreen();
-		map.CalculateOffset();
+		camera.offset = { (float)GetScreenWidth() / 2, (float)GetScreenHeight() / 2 };
 	}
 
 	player.Update();
@@ -60,7 +75,6 @@ void Game::Update()
 void Game::StartNewLevel()
 {
 	map.Generate();
-	const auto spawnPos = map.GetEmptyTile();
-
+	const Vector2 spawnPos = map.GetEmptyTile();
 	player.Spawn(spawnPos);
 }

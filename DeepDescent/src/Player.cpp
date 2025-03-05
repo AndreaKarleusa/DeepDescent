@@ -28,7 +28,7 @@ void Player::Update()
 	position.y += speed * direction.y;
 
 	if (IsKeyPressed(MOUSE_BUTTON_LEFT) && playerState == State::Mining) { std::cout << "Mining!\n"; }
-	if (IsKeyPressed(MOUSE_BUTTON_LEFT) && playerState == State::Attacking) { std::cout << "Attacking!\n"; }
+	else if (IsKeyPressed(MOUSE_BUTTON_LEFT) && playerState == State::Attacking) { std::cout << "Attacking!\n"; }
 }
 
 void Player::Spawn(const Vector2& spawnPos)
