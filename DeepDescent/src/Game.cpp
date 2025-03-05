@@ -55,11 +55,16 @@ void Game::Update()
 	// TEMPORARY KEY BINDING
 	if(IsKeyPressed(KEY_P))
 	{
-		if (IsWindowFullscreen()){ SetWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT); }
+		if (IsWindowFullscreen())
+		{ 
+			SetWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT); 
+			camera.zoom = 1.0f;
+		}
 		else
 		{
 			int monitor = GetCurrentMonitor();
 			SetWindowSize(GetMonitorWidth(monitor), GetMonitorHeight(monitor));
+			camera.zoom = 1.5f;
 		}
 
 		ToggleFullscreen();
