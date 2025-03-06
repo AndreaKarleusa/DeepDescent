@@ -4,20 +4,21 @@
 
 class Tile {
 public:
-	int spriteID;
 	Rectangle spriteRec;
 	Vector2 position;
+
+	int spriteID = 0;
+	bool isEmpty = true;
+	bool isStaircase = false;
 
 	const int MAX_HEALTH = 15;
 	int health = MAX_HEALTH;
 
-	bool isEmpty;
-	bool isStaircase;
 public:
 	Tile();
 
 	void Regenerate(Vector2 pos, int sID);
-	void Draw(Texture2D textureSheet);
+	void Draw(Texture2D spriteSheet);
 	void Update();
 	void Damage(const int damage);
 };
@@ -27,14 +28,14 @@ public:
 class Map
 {
 public:
-	Image spriteSheet;
-	Texture2D textureSheet;
+	Texture2D spriteSheet;
 	Tile tiles[MAP_SIZE][MAP_SIZE];
 
 	const int MAX_TILE_ID = 4;
 
 public:
 	Map();
+	~Map();
 
 	//REMEMBER: need to load textures AFTER InitWindow() function! else it just crashes for some reason
 	void LoadAssets();

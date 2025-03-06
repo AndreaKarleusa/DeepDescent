@@ -139,9 +139,13 @@
     <ClInclude Include="src\Settings.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="assets\enemies.png" />
+    <Image Include="assets\New Piskel-1.png (1).png" />
+    <Image Include="assets\tiles.png" />
+    <Image Include="assets\player.png" />
     <Image Include="assets\Spritesheet512.png" />
-    <Image Include="assets\Spritesheet64.png" />
-    <Image Include="assets\SampleScene.png" />
+    <Image Include="assets\FirstSceneDraft.png" />
+    <Image Include="assets\tools.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

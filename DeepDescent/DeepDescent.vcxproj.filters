@@ -46,10 +46,22 @@
     <Image Include="assets\Spritesheet512.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="assets\Spritesheet64.png">
+    <Image Include="assets\FirstSceneDraft.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="assets\SampleScene.png">
+    <Image Include="assets\tools.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\enemies.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\New Piskel-1.png (1).png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\tiles.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\player.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

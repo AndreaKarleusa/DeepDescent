@@ -5,12 +5,13 @@
 using namespace std;
 
 Map::Map() { }
+Map::~Map() { UnloadTexture(spriteSheet); }
 
 void Map::LoadAssets() 
 {
-	spriteSheet = LoadImage("assets/Spritesheet512.png");
-	textureSheet = LoadTextureFromImage(spriteSheet);
-	UnloadImage(spriteSheet);
+	Image img = LoadImage("assets/Spritesheet512.png");
+	spriteSheet = LoadTextureFromImage(img);
+	UnloadImage(img);
 }
 	
 void Map::Draw()
@@ -19,7 +20,7 @@ void Map::Draw()
 	{
 		for (int j = 0; j < MAP_SIZE; j++)
 		{
-			tiles[i][j].Draw(textureSheet);
+			tiles[i][j].Draw(spriteSheet);
 		}
 	}
 }
@@ -62,12 +63,7 @@ int Map::RandomInt(const int& maxInt)
 	return dist(gen);
 }
 
-Tile::Tile() {
-	position = { 0.0f, 0.0f };
-	spriteID = 0;
-	isEmpty = true;
-	isStaircase = false;
-}
+Tile::Tile() {}
 
 void Tile::Regenerate(Vector2 pos, int sID)
 {
@@ -77,7 +73,7 @@ void Tile::Regenerate(Vector2 pos, int sID)
 	isEmpty = !(spriteID >= 2);
 }
 
-void Tile::Draw(Texture2D textureSheet)
+void Tile::Draw(Texture2D spriteSheet)
 {
-	DrawTextureRec(textureSheet, spriteRec, position, WHITE);
+	DrawTextureRec(spriteSheet, spriteRec, position, WHITE);
 }
