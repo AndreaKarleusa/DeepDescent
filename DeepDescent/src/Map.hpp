@@ -31,7 +31,7 @@ public:
 	Texture2D spriteSheet;
 	Tile tiles[MAP_SIZE][MAP_SIZE];
 
-	const int MAX_TILE_ID = 4;
+	const int MAX_TILE_ID = 4; 
 
 public:
 	Map();

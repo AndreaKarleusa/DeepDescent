@@ -6,17 +6,14 @@ Player::~Player() {}
 
 void Player::LoadAssets()
 {
-	Image spriteSheet = LoadImage("assets/Spritesheet512.png");
-
-	textureSheet = LoadTextureFromImage(spriteSheet);
-	playerSprite = { TILE_SIZE * 3, TILE_SIZE * 2, TILE_SIZE, TILE_SIZE };
-
-	UnloadImage(spriteSheet);
+	Image img = LoadImage("assets/player.png");
+	playerSprite = LoadTextureFromImage(img);
+	UnloadImage(img);
 }
 
 void Player::Draw()
 {
-	DrawTextureRec(textureSheet, playerSprite, position, WHITE);
+	DrawTexture(playerSprite, position.x, position.y, WHITE);
 }
 
 void Player::Update()

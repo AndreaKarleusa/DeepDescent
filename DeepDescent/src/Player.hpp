@@ -12,9 +12,8 @@ enum class State
 class Player
 {
 public:
-	Texture2D textureSheet;
-	Rectangle playerSprite;
-	Rectangle toolSprite;
+	Texture2D playerSprite;
+	Rectangle toolSprites;
 	Rectangle hitbox;
 
 	Vector2 position;
@@ -34,8 +33,9 @@ public:
 	Player();
 	~Player();
 
-	void Spawn(const Vector2& spawnPos);
-	void LoadAssets();
 	void Draw();
 	void Update();
+
+	void Spawn(const Vector2& spawnPos);
+	void LoadAssets();
 };

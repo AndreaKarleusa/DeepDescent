@@ -1,15 +1,13 @@
 #include "Map.hpp"
 #include "raylib.h"
 #include <random>
-#include <iostream>
-using namespace std;
 
 Map::Map() { }
 Map::~Map() { UnloadTexture(spriteSheet); }
 
 void Map::LoadAssets() 
 {
-	Image img = LoadImage("assets/Spritesheet512.png");
+	Image img = LoadImage("assets/tiles.png");
 	spriteSheet = LoadTextureFromImage(img);
 	UnloadImage(img);
 }
@@ -62,6 +60,9 @@ int Map::RandomInt(const int& maxInt)
 
 	return dist(gen);
 }
+
+
+
 
 Tile::Tile() {}
 
