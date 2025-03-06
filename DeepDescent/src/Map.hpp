@@ -5,6 +5,7 @@
 class Tile {
 public:
 	Rectangle spriteRec;
+	Rectangle collisionRec;
 	Vector2 position;
 
 	int spriteID = 0;

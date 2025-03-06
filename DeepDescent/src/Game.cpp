@@ -2,6 +2,7 @@
 #include "raylib.h"
 
 #include <iostream>
+#include <vector>
 
 Game::Game(){}
 Game::~Game(){}
@@ -10,6 +11,7 @@ void Game::Run()
 {
 	InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE);
 	SetTargetFPS(FPS);
+
 	CameraSetup();
 	LoadAssets();
 
@@ -70,8 +72,8 @@ void Game::Update()
 		ToggleFullscreen();
 		camera.offset = { (float)GetScreenWidth() / 2, (float)GetScreenHeight() / 2 };
 	}
-
-	player.Update();
+	
+	player.Update(map.tiles);
 
 	if (IsKeyPressed(KEY_SPACE))
 		StartNewLevel();

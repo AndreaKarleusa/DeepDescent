@@ -1,6 +1,5 @@
 #pragma once
 
-
 static const char* SCREEN_TITLE = "Deep Descent";
 static const int SCREEN_WIDTH = 1024;
 static const int SCREEN_HEIGHT = 720;

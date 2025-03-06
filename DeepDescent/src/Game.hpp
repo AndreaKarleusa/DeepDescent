@@ -4,6 +4,8 @@
 #include "Map.hpp"
 #include "Player.hpp"
 
+#include <vector>
+
 class Game
 {
 public:
@@ -20,11 +22,6 @@ public:
 	void LoadAssets();
 	void CameraSetup();
 
-	/*
-		- generates map
-		- spawns player
-		- spawns enemies
-		- spawns exit
-	*/
 	void StartNewLevel();
+	std::vector<Tile> CollisonTiles();
 };

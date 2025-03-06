@@ -52,10 +52,10 @@
     <Image Include="assets\enemies.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="assets\player.png">
+    <Image Include="assets\tiles.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="assets\tiles.png">
+    <Image Include="assets\player.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

@@ -1,9 +1,10 @@
 #pragma once
 #include "raylib.h"
 #include "Settings.hpp"
+#include "Map.hpp"
+#include <vector>
 
-enum class State
-{
+enum class State{
 	Mining,
 	Attacking
 };
@@ -14,10 +15,10 @@ class Player
 public:
 	Texture2D playerSprite;
 	Rectangle toolSprites;
-	Rectangle hitbox;
 
 	Vector2 position;
 	Vector2 direction;
+	Vector2 velocity;
 	const float speed = 2.5f;
 
 	const int MAX_HEALTH = 15;
@@ -33,9 +34,10 @@ public:
 	Player();
 	~Player();
 
+	void LoadAssets();
 	void Draw();
-	void Update();
+	void Update(const Tile tiles[MAP_SIZE][MAP_SIZE]);
 
 	void Spawn(const Vector2& spawnPos);
-	void LoadAssets();
+	std::vector<Tile> CheckCollision(const Tile tiles[MAP_SIZE][MAP_SIZE]);
 };

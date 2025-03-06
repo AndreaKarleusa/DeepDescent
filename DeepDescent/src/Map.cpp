@@ -72,6 +72,10 @@ void Tile::Regenerate(Vector2 pos, int sID)
 	spriteID = sID;
 	spriteRec = { (float)(spriteID*TILE_SIZE), 0, TILE_SIZE, TILE_SIZE };
 	isEmpty = !(spriteID >= 2);
+	collisionRec = {
+		position.x, position.y,
+		TILE_SIZE, TILE_SIZE
+	};
 }
 
 void Tile::Draw(Texture2D spriteSheet)
