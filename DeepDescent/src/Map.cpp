@@ -104,6 +104,8 @@ void Tile::Generate(Vector2 pos, int sID)
 		position.x, position.y,
 		TILE_SIZE, TILE_SIZE
 	};
+	
+	health = MAX_HEALTH;
 }
 
 void Tile::Draw(Texture2D spriteSheet)
@@ -111,6 +113,8 @@ void Tile::Draw(Texture2D spriteSheet)
 	DrawTextureRec(spriteSheet, spriteRec, position, WHITE);
 }
 
+// TODO:
+// Just... clean this up... pls.
 void Tile::Update()
 {
 	if (health != MAX_HEALTH) {

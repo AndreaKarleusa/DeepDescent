@@ -10,11 +10,13 @@ public:
 	Rectangle collisionRec;
 	Vector2 position;
 
+	// TODO:
+	// remove the is- prefix
 	int spriteID = 0;
 	bool isEmpty = true;
 	bool isStaircase = false;
 
-	const int MAX_HEALTH = 3;
+	const int MAX_HEALTH = 2;
 	int health = MAX_HEALTH;
 
 public:

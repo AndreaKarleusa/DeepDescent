@@ -48,7 +48,7 @@ void Player::Update(Tile tiles[MAP_SIZE][MAP_SIZE], const Camera2D& cam)
 	if (position.y <= 0) { position.y = 0; }
 	if (position.y >= MAP_SIZE * TILE_SIZE - playerSprite.height) { position.y = MAP_SIZE * TILE_SIZE - playerSprite.height; }
 
-
+	// TODO: calculate the player-mouse distance
 	if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
 	{
 		Vector2 mousePosition = GetScreenToWorld2D(GetMousePosition(), cam);
@@ -64,6 +64,9 @@ void Player::Spawn(const Vector2& spawnPos)
 	position = spawnPos;
 }
 
+// OPTIMIZATION:
+// + instead of the whole array of tiles give the function only tiles around the player
+// + use iterators to clean up the code
 std::vector<Tile> Player::CheckCollision(Tile tiles[MAP_SIZE][MAP_SIZE])
 {
 	std::vector<Tile> collisionTiles;
@@ -74,7 +77,7 @@ std::vector<Tile> Player::CheckCollision(Tile tiles[MAP_SIZE][MAP_SIZE])
 			if (!(tiles[i][j].isEmpty) && CheckCollisionRecs(hitbox, tiles[i][j].collisionRec)) {
 				collisionTiles.push_back(tiles[i][j]);
 
-				if (tiles[i][j].isStaircase && tiles[i][j].health == 0) {
+				if (tiles[i][j].isStaircase && tiles[i][j].health <= 0) {
 					foundStaircase = true; 
 					tiles[i][j].isStaircase = false;
 				}
