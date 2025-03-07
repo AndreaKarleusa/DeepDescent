@@ -73,7 +73,13 @@ void Game::Update()
 		camera.offset = { (float)GetScreenWidth() / 2, (float)GetScreenHeight() / 2 };
 	}
 	
-	player.Update(map.tiles);
+	player.Update(map.tiles, camera);
+	map.Update();
+
+	if (player.foundStaircase) {
+		StartNewLevel();
+		player.foundStaircase = false;
+	}
 
 	if (IsKeyPressed(KEY_SPACE))
 		StartNewLevel();

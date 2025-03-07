@@ -1,6 +1,7 @@
 #include "Map.hpp"
 #include "raylib.h"
 #include <random>
+#include <iostream>
 
 Map::Map() { }
 Map::~Map() { UnloadTexture(spriteSheet); }
@@ -23,6 +24,15 @@ void Map::Draw()
 	}
 }
 
+void Map::Update()
+{
+	for (int i = 0; i < MAP_SIZE; i++) {
+		for (int j = 0; j < MAP_SIZE; j++) {
+			tiles[i][j].Update();
+		}
+	}
+}
+
 void Map::Generate()
 {
 	for (int i = 0; i < MAP_SIZE; i++)
@@ -33,9 +43,10 @@ void Map::Generate()
 			Vector2 tilePos = { (float)(j*TILE_SIZE), (float)(i*TILE_SIZE) };
 			int spriteID = RandomInt(MAX_TILE_ID);
 			
-			tiles[i][j].Regenerate(tilePos, spriteID);
+			tiles[i][j].Generate(tilePos, spriteID);
 		}
 	}
+	GenerateStaircase();
 }
 
 Vector2 Map::GetEmptyTile()
@@ -50,7 +61,19 @@ Vector2 Map::GetEmptyTile()
 
 	return tiles[y][x].position;
 }
+void Map::GenerateStaircase() 
+{
+	int x = RandomInt(MAP_SIZE - 1);
+	int y = RandomInt(MAP_SIZE -1);
 
+	while (tiles[y][x].isEmpty) {
+		x = RandomInt(MAP_SIZE - 1);
+		y = RandomInt(MAP_SIZE - 1);
+	}
+
+	tiles[y][x].isStaircase =  true;
+	std::cout << x << " " << y << std::endl;
+}
 int Map::RandomInt(const int& maxInt)
 {
 
@@ -66,12 +89,17 @@ int Map::RandomInt(const int& maxInt)
 
 Tile::Tile() {}
 
-void Tile::Regenerate(Vector2 pos, int sID)
+void Tile::Generate(Vector2 pos, int sID)
 {
 	position = pos;
+
 	spriteID = sID;
-	spriteRec = { (float)(spriteID*TILE_SIZE), 0, TILE_SIZE, TILE_SIZE };
-	isEmpty = !(spriteID >= 2);
+	defaultSpriteRec = { (float)(spriteID * TILE_SIZE), 0, TILE_SIZE, TILE_SIZE };
+	spriteRec = defaultSpriteRec;
+
+	isEmpty = (spriteID < 2); // the first 2 tiles are empty
+	isStaircase = false;
+
 	collisionRec = {
 		position.x, position.y,
 		TILE_SIZE, TILE_SIZE
@@ -81,4 +109,24 @@ void Tile::Regenerate(Vector2 pos, int sID)
 void Tile::Draw(Texture2D spriteSheet)
 {
 	DrawTextureRec(spriteSheet, spriteRec, position, WHITE);
+}
+
+void Tile::Update()
+{
+	if (health != MAX_HEALTH) {
+		spriteRec.x = 3*TILE_SIZE + defaultSpriteRec.x ; // moves the sprite rec to the broken tile version
+	}
+	if (health <= 0 && !isStaircase) {
+		spriteRec.x = 0;
+		isEmpty = true;
+	}
+	if (health <= 0 && isStaircase) {
+		spriteRec.x = 8 * TILE_SIZE;
+		isEmpty = false;
+	}
+}
+
+void Tile::Damage(const int damage) 
+{
+	health -= damage;
 }

@@ -23,5 +23,4 @@ public:
 	void CameraSetup();
 
 	void StartNewLevel();
-	std::vector<Tile> CollisonTiles();
 };

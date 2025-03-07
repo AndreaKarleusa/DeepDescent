@@ -2,8 +2,10 @@
 #include "raylib.h"
 #include "Settings.hpp"
 
+
 class Tile {
 public:
+	Rectangle defaultSpriteRec;
 	Rectangle spriteRec;
 	Rectangle collisionRec;
 	Vector2 position;
@@ -12,13 +14,13 @@ public:
 	bool isEmpty = true;
 	bool isStaircase = false;
 
-	const int MAX_HEALTH = 15;
+	const int MAX_HEALTH = 3;
 	int health = MAX_HEALTH;
 
 public:
 	Tile();
 
-	void Regenerate(Vector2 pos, int sID);
+	void Generate(Vector2 pos, int sID);
 	void Draw(Texture2D spriteSheet);
 	void Update();
 	void Damage(const int damage);
@@ -44,9 +46,11 @@ public:
 	void Update(); // listen for player hits and other events
 	
 	void Generate();
+	void GenerateStaircase();
 	int RandomInt(const int& maxInt);
 	
 	Vector2 GetEmptyTile();
+
 	
 	bool DamageTile(const Vector2& tilePos, const int& dmg);
 };

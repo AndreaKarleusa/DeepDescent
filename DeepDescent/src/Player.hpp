@@ -30,14 +30,16 @@ public:
 	int enemyDamage = 4;
 	int blockDamage = 1;
 
+	bool foundStaircase = false;
+
 public:
 	Player();
 	~Player();
 
 	void LoadAssets();
 	void Draw();
-	void Update(const Tile tiles[MAP_SIZE][MAP_SIZE]);
+	void Update(Tile tiles[MAP_SIZE][MAP_SIZE], const Camera2D& cam);
 
 	void Spawn(const Vector2& spawnPos);
-	std::vector<Tile> CheckCollision(const Tile tiles[MAP_SIZE][MAP_SIZE]);
+	std::vector<Tile> CheckCollision(Tile tiles[MAP_SIZE][MAP_SIZE]);
 };

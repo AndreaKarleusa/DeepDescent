@@ -19,7 +19,7 @@ void Player::Draw()
 	DrawTexture(playerSprite, position.x, position.y, WHITE);
 }
 
-void Player::Update(const Tile tiles[MAP_SIZE][MAP_SIZE])
+void Player::Update(Tile tiles[MAP_SIZE][MAP_SIZE], const Camera2D& cam)
 {
 	direction.x = IsKeyDown(KEY_D) - IsKeyDown(KEY_A);
 	direction.y = IsKeyDown(KEY_S) - IsKeyDown(KEY_W);
@@ -47,6 +47,16 @@ void Player::Update(const Tile tiles[MAP_SIZE][MAP_SIZE])
 	if (position.x >= MAP_SIZE * TILE_SIZE - playerSprite.width) { position.x = MAP_SIZE * TILE_SIZE - playerSprite.width; }
 	if (position.y <= 0) { position.y = 0; }
 	if (position.y >= MAP_SIZE * TILE_SIZE - playerSprite.height) { position.y = MAP_SIZE * TILE_SIZE - playerSprite.height; }
+
+
+	if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+	{
+		Vector2 mousePosition = GetScreenToWorld2D(GetMousePosition(), cam);
+		int x = mousePosition.x / TILE_SIZE;
+		int y = mousePosition.y / TILE_SIZE;
+
+		if (!tiles[y][x].isEmpty) { tiles[y][x].Damage(blockDamage); };
+	}
 }
 
 void Player::Spawn(const Vector2& spawnPos)
@@ -54,7 +64,7 @@ void Player::Spawn(const Vector2& spawnPos)
 	position = spawnPos;
 }
 
-std::vector<Tile> Player::CheckCollision(const Tile tiles[MAP_SIZE][MAP_SIZE])
+std::vector<Tile> Player::CheckCollision(Tile tiles[MAP_SIZE][MAP_SIZE])
 {
 	std::vector<Tile> collisionTiles;
 	Rectangle hitbox = { position.x, position.y, (float)playerSprite.width, (float)playerSprite.height };
@@ -63,6 +73,11 @@ std::vector<Tile> Player::CheckCollision(const Tile tiles[MAP_SIZE][MAP_SIZE])
 		for (int j = 0; j < MAP_SIZE; j++) {
 			if (!(tiles[i][j].isEmpty) && CheckCollisionRecs(hitbox, tiles[i][j].collisionRec)) {
 				collisionTiles.push_back(tiles[i][j]);
+
+				if (tiles[i][j].isStaircase && tiles[i][j].health == 0) {
+					foundStaircase = true; 
+					tiles[i][j].isStaircase = false;
+				}
 			}
 		}
 	}
