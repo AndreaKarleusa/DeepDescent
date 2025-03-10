@@ -1,6 +1,7 @@
 #include "Player.hpp"
 #include "Map.hpp"
 
+#include<raylib.h>
 #include <vector>
 #include <iostream>
 
@@ -9,14 +10,20 @@ Player::~Player() {}
 
 void Player::LoadAssets()
 {
-	Image img = LoadImage("assets/player.png");
-	playerSprite = LoadTextureFromImage(img);
-	UnloadImage(img);
+	Image playerImg = LoadImage("assets/player.png");
+	Image toolsImg = LoadImage("assets/tools.png");
+
+	playerSprite = LoadTextureFromImage(playerImg);
+	toolsSprite = LoadTextureFromImage(toolsImg);
+
+	UnloadImage(playerImg);
+	UnloadImage(toolsImg);
 }
 
 void Player::Draw()
 {
 	DrawTexture(playerSprite, position.x, position.y, WHITE);
+	DrawTextureRec(toolsSprite, toolRect, mousePos, WHITE);
 }
 
 void Player::Update(Tile tiles[MAP_SIZE][MAP_SIZE], const Camera2D& cam)
@@ -48,6 +55,11 @@ void Player::Update(Tile tiles[MAP_SIZE][MAP_SIZE], const Camera2D& cam)
 	if (position.y <= 0) { position.y = 0; }
 	if (position.y >= MAP_SIZE * TILE_SIZE - playerSprite.height) { position.y = MAP_SIZE * TILE_SIZE - playerSprite.height; }
 
+	// update tools
+	mousePos = GetScreenToWorld2D(GetMousePosition(), cam);
+	toolRect = { 0, 0, TILE_SIZE, TILE_SIZE };
+
+
 	// TODO: calculate the player-mouse distance
 	if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
 	{
@@ -73,16 +85,17 @@ std::vector<Tile> Player::CheckCollision(Tile tiles[MAP_SIZE][MAP_SIZE])
 	Rectangle hitbox = { position.x, position.y, (float)playerSprite.width, (float)playerSprite.height };
 
 	for (int i = 0; i < MAP_SIZE; i++) {
-		for (int j = 0; j < MAP_SIZE; j++) {
-			if (!(tiles[i][j].isEmpty) && CheckCollisionRecs(hitbox, tiles[i][j].collisionRec)) {
-				collisionTiles.push_back(tiles[i][j]);
+	for (int j = 0; j < MAP_SIZE; j++) {
+		if (tiles[i][j].isEmpty) { continue; }
 
-				if (tiles[i][j].isStaircase && tiles[i][j].health <= 0) {
+		if (CheckCollisionRecs(hitbox, tiles[i][j].collisionRec)) {
+			collisionTiles.push_back(tiles[i][j]);
+
+			if (tiles[i][j].isStaircase && tiles[i][j].health <= 0) {
 					foundStaircase = true; 
 					tiles[i][j].isStaircase = false;
-				}
 			}
 		}
-	}
+	}}
 	return collisionTiles;
 }

@@ -4,7 +4,7 @@
 #include "Map.hpp"
 #include <vector>
 
-enum class State{
+enum State{
 	Mining,
 	Attacking
 };
@@ -14,19 +14,22 @@ class Player
 {
 public:
 	Texture2D playerSprite;
-	Rectangle toolSprites;
+	Texture2D toolsSprite;
+	Rectangle toolRect;
 
 	Vector2 position;
 	Vector2 direction;
 	Vector2 velocity;
-	const float speed = 2.5f;
+	const float speed = 3.0f;
 
 	const int MAX_HEALTH = 15;
 	const int MAX_ENERGY = 3;
 	int health = MAX_HEALTH;
 	int energy = MAX_ENERGY;
 
-	State playerState = State::Mining;
+	Vector2 mousePos;
+	State playerState = Mining;
+	int toolRange = 15;
 	int enemyDamage = 4;
 	int blockDamage = 1;
 

@@ -1,5 +1,5 @@
 #pragma once
-#include "raylib.h"
+#include <raylib.h>
 #include "Settings.hpp"
 #include "Map.hpp"
 #include "Player.hpp"
