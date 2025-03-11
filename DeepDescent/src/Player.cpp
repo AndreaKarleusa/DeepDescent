@@ -4,6 +4,7 @@
 #include<raylib.h>
 #include <vector>
 #include <cmath>
+#include <string>
 #include <iostream>
 
 Player::Player() {}
@@ -21,10 +22,17 @@ void Player::LoadAssets()
 	UnloadImage(toolsImg);
 }
 
-void Player::Draw()
+void Player::Draw(const Camera2D& cam)
 {
 	DrawTexture(playerSprite, position.x, position.y, WHITE);
 	DrawTextureRec(toolsSprite, toolRects[tool], toolPos, WHITE);
+
+	std::string healthText = "HEALTH: " + std::to_string(health);
+	std::string energyText = "ENERGY: " + std::to_string(energy);
+	Vector2 screenOrigin = GetScreenToWorld2D({ 0,0 }, cam);
+
+	DrawText(healthText.c_str(), screenOrigin.x, screenOrigin.y, 25, WHITE);
+	DrawText(energyText.c_str(), screenOrigin.x, screenOrigin.y + 25, 25, WHITE);
 }
 
 void Player::Update(Tile tiles[MAP_SIZE][MAP_SIZE], const Camera2D& cam)

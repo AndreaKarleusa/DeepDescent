@@ -113,8 +113,9 @@ void Tile::Draw(Texture2D spriteSheet)
 	DrawTextureRec(spriteSheet, spriteRec, position, WHITE);
 }
 
-// TODO:
-// Just... clean this up... pls.
+// TODO: Just... clean this up... pls.
+// IDEA: put the sprites in a sprite rect array
+//		 the same way you have for tools
 void Tile::Update()
 {
 	if (health != MAX_HEALTH) {

@@ -33,7 +33,7 @@ public:
 	Vector2 toolPos;
 	Tool tool = Pickaxe;
 
-	int toolRange = 100;
+	int toolRange = 90;
 	int pickaxeDamage = 1;
 	int shovelDamage= 5;
 
@@ -44,7 +44,7 @@ public:
 	~Player();
 
 	void LoadAssets();
-	void Draw();
+	void Draw(const Camera2D& cam);
 	void Update(Tile tiles[MAP_SIZE][MAP_SIZE], const Camera2D& cam);
 
 	void Spawn(const Vector2& spawnPos);

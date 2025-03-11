@@ -53,3 +53,5 @@ Better tile state and sprite managing
 	Draw(sprites[tileState], positon);
 
 ```
+
+Utils file with random number functions and useful shit
