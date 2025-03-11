@@ -4,9 +4,9 @@
 #include "Map.hpp"
 #include <vector>
 
-enum State{
-	Mining,
-	Attacking
+enum Tool {
+	Pickaxe,
+	Shovel
 };
 
 // gain energy/health each 10 levels ???
@@ -14,8 +14,6 @@ class Player
 {
 public:
 	Texture2D playerSprite;
-	Texture2D toolsSprite;
-	Rectangle toolRect;
 
 	Vector2 position;
 	Vector2 direction;
@@ -27,11 +25,17 @@ public:
 	int health = MAX_HEALTH;
 	int energy = MAX_ENERGY;
 
-	Vector2 mousePos;
-	State playerState = Mining;
-	int toolRange = 15;
-	int enemyDamage = 4;
-	int blockDamage = 1;
+	Texture2D toolsSprite;
+	Rectangle toolRects[2] = {
+		{0,0, TILE_SIZE, TILE_SIZE},
+		{TILE_SIZE, 0, TILE_SIZE, TILE_SIZE}
+	};
+	Vector2 toolPos;
+	Tool tool = Pickaxe;
+
+	int toolRange = 100;
+	int pickaxeDamage = 1;
+	int shovelDamage= 5;
 
 	bool foundStaircase = false;
 

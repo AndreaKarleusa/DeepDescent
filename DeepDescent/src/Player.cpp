@@ -3,6 +3,7 @@
 
 #include<raylib.h>
 #include <vector>
+#include <cmath>
 #include <iostream>
 
 Player::Player() {}
@@ -23,11 +24,12 @@ void Player::LoadAssets()
 void Player::Draw()
 {
 	DrawTexture(playerSprite, position.x, position.y, WHITE);
-	DrawTextureRec(toolsSprite, toolRect, mousePos, WHITE);
+	DrawTextureRec(toolsSprite, toolRects[tool], toolPos, WHITE);
 }
 
 void Player::Update(Tile tiles[MAP_SIZE][MAP_SIZE], const Camera2D& cam)
 {
+	// player movement
 	direction.x = IsKeyDown(KEY_D) - IsKeyDown(KEY_A);
 	direction.y = IsKeyDown(KEY_S) - IsKeyDown(KEY_W);
 	velocity.x = speed * direction.x;
@@ -55,20 +57,37 @@ void Player::Update(Tile tiles[MAP_SIZE][MAP_SIZE], const Camera2D& cam)
 	if (position.y <= 0) { position.y = 0; }
 	if (position.y >= MAP_SIZE * TILE_SIZE - playerSprite.height) { position.y = MAP_SIZE * TILE_SIZE - playerSprite.height; }
 
-	// update tools
-	mousePos = GetScreenToWorld2D(GetMousePosition(), cam);
-	toolRect = { 0, 0, TILE_SIZE, TILE_SIZE };
+	// tool logic
+	Vector2 mousePos = GetScreenToWorld2D(GetMousePosition(), cam);
+	toolPos.x = mousePos.x - TILE_SIZE / 2;
+	toolPos.y = mousePos.y - TILE_SIZE / 2;
 
+	// TODO: better variable names
+	// IDEA: just put a bounding box around the player and
+	//		 if the mouse point collides with it it is in range
+	//       (maybe cleaner and faster)
+	Vector2 mouseDistVec = {
+		mousePos.x - (position.x + playerSprite.width / 2),
+		mousePos.y - (position.y + playerSprite.height / 2)
+	};
+	int mouseDist = abs(sqrt(mouseDistVec.x*mouseDistVec.x + mouseDistVec.y*mouseDistVec.y));
 
-	// TODO: calculate the player-mouse distance
-	if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
-	{
-		Vector2 mousePosition = GetScreenToWorld2D(GetMousePosition(), cam);
-		int x = mousePosition.x / TILE_SIZE;
-		int y = mousePosition.y / TILE_SIZE;
+	// IDEA: clamp the actuall mouseDist float to the toolRange
+	if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && mouseDist <= toolRange){
+		if (tool == Pickaxe) {
+			int x = mousePos.x / TILE_SIZE;
+			int y = mousePos.y / TILE_SIZE;
 
-		if (!tiles[y][x].isEmpty) { tiles[y][x].Damage(blockDamage); };
+			if (!tiles[y][x].isEmpty)
+				tiles[y][x].Damage(pickaxeDamage);
+		}
+		else {
+			std::cout << "Attacking!\n";
+		}
 	}
+	if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)) // tool changing
+		tool = (Tool)(!tool);
+
 }
 
 void Player::Spawn(const Vector2& spawnPos)

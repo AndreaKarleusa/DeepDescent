@@ -11,6 +11,7 @@ void Game::Run()
 {
 	InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE);
 	SetTargetFPS(FPS);
+	HideCursor();
 
 	CameraSetup();
 	LoadAssets();
