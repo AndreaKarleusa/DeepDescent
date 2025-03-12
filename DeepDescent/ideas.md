@@ -1,8 +1,12 @@
 # Ideas
 
+## Polishing
+- Make the bat flap its wings every N seconds so it looks like it is really flying (physics)
+
 ## Optimizations:
-- Collision manager that takes care of all the collision logic.
+- Every class has its own random generator which is just stupid
 - Move random generators to the constructor (they are cost heavy)
+- Collision manager that takes care of all the collision logic.
 - Only check the 9 tiles around the player for colissions
 
 ## Quality Of Life
@@ -12,3 +16,4 @@
 
 ## Cleaner code
 - Better tile state and sprite managing (in the form of an array)
+- Better file structuring

@@ -28,9 +28,10 @@ void Spawner::Update(const Vector2& playerPos) {
 		enemy.Update(playerPos);
 }
 
+// -1 is for the array index offset
 Vector2 Spawner::RandomPos() {
-	int x = RandomInt(MAP_SIZE);
-	int y = RandomInt(MAP_SIZE);
+	int x = RandomInt(MAP_SIZE-1);
+	int y = RandomInt(MAP_SIZE-1);
 
 	return Vector2{ (float)(x*TILE_SIZE), (float)(y*TILE_SIZE) };
 }

@@ -33,9 +33,9 @@ public:
 	Vector2 toolPos;
 	Tool tool = Pickaxe;
 
-	int toolRange = 1.5*TILE_SIZE;
-	int pickaxeDamage = 1;
-	int shovelDamage= 5;
+	const int toolRange = 1.5*TILE_SIZE;
+	const int pickaxeDamage = 1;
+	const int shovelDamage= 5;
 
 	bool foundStaircase = false;
 

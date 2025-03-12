@@ -10,7 +10,8 @@ public:
 	Rectangle hitbox;
 
 	Vector2 position;
-	const float speed = 5.0f;
+	Vector2 velocity;
+	const float speed = 1.5f;
 
 	const float MAX_HEALTH = 15.0f;
 	float health = MAX_HEALTH;
