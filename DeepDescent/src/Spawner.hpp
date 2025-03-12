@@ -8,7 +8,9 @@ class Spawner {
 public:
 	Texture2D spriteSheet;
 
-	Timer spawnTimer = Timer(5);
+	const int spawnDelay = 5; // in seconds
+	Timer spawnTimer = Timer(spawnDelay);
+
 	std::vector<Enemy> enemies;
 public:
 	Spawner();

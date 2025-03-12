@@ -1,61 +1,14 @@
 # Ideas
 
-Collision manager that takes care of all the collision logic.
-```cpp
-	
-	class CollisionManager
-	{
-	public:
-		Rectangle playerRect;
-		Tile tiles[MAP_SIZE][MAP_SIZE];
-	public:
-		void Update(playerRect, playerVel);
-		
-		void TileCollision();
-		void EnemyCollision();
-	private:
-		std::vector<Tile> CollisionTiles();
-	};
-```
+## Optimizations:
+- Collision manager that takes care of all the collision logic.
+- Move random generators to the constructor (they are cost heavy)
+- Only check the 9 tiles around the player for colissions
 
-Better random tile algorithm
+## Quality Of Life
+- Better random tile algorithm (one that returns a random float between 0.0f and 1.0f)
+- Utils file with random number functions and useful shit
+- Static gamestate object that will make using variables 100x easier
 
-```cpp
-float Random(){ return randomFloat(0.0f, 1.0f); }
-enum sprites {...};
-
-float chance = Random();
-float emptyChance = 0.5f;
-float fullChance  = 1.0f - emptyChance;
-
-if (tileGen < emptyChance) { sprites[empty] }
-else {tile.sprite = sprites[(int)(chance/fullchance * tilesize)]; }
-
-```
-
-Better tile state and sprite managing
-
-```cpp
-	
-	Rectangle sprites[2] = {
-		Rectangle whole,
-		Rectangle damaged
-	};
-
-	enum class TileType {
-		whole,
-		damaged
-	};
-
-	TileType tileState = State::whole
-
-
-	Draw(sprites[tileState], positon);
-
-```
-
-Utils file with random number functions and useful shit
-
-Static gamestate object that will make using variables 100x easier
-
-Move random generators to the constructor (they are cost heavyd)
+## Cleaner code
+- Better tile state and sprite managing (in the form of an array)
