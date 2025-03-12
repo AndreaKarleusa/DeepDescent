@@ -31,6 +31,7 @@ void Game::LoadAssets()
 {
 	map.LoadAssets();
 	player.LoadAssets();
+	spawner.LoadAssets();
 }
 
 void Game::CameraSetup()
@@ -49,6 +50,7 @@ void Game::Draw()
 		ClearBackground(BLACK);
 		map.Draw();
 		player.Draw(camera);
+		spawner.Draw();
 
 	EndMode2D();
 	EndDrawing();
@@ -76,6 +78,7 @@ void Game::Update()
 	
 	player.Update(map.tiles, camera);
 	map.Update();
+	spawner.Update(player.position);
 
 	if (player.foundStaircase) {
 		StartNewLevel();

@@ -127,16 +127,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Enemy.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Map.cpp" />
     <ClCompile Include="src\Player.cpp" />
+    <ClCompile Include="src\Spawner.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Enemy.hpp" />
     <ClInclude Include="src\Game.hpp" />
     <ClInclude Include="src\Map.hpp" />
     <ClInclude Include="src\Player.hpp" />
     <ClInclude Include="src\Settings.hpp" />
+    <ClInclude Include="src\Spawner.hpp" />
+    <ClInclude Include="src\Timer.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\enemies.png" />

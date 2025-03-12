@@ -55,3 +55,7 @@ Better tile state and sprite managing
 ```
 
 Utils file with random number functions and useful shit
+
+Static gamestate object that will make using variables 100x easier
+
+Move random generators to the constructor (they are cost heavyd)

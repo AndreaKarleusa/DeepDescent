@@ -33,7 +33,7 @@ public:
 	Vector2 toolPos;
 	Tool tool = Pickaxe;
 
-	int toolRange = 90;
+	int toolRange = 1.5*TILE_SIZE;
 	int pickaxeDamage = 1;
 	int shovelDamage= 5;
 
