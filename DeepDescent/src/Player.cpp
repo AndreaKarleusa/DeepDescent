@@ -31,8 +31,8 @@ void Player::Draw(const Camera2D& cam)
 	std::string energyText = "ENERGY: " + std::to_string(energy);
 	Vector2 screenOrigin = GetScreenToWorld2D({ 0,0 }, cam);
 
-	DrawText(healthText.c_str(), screenOrigin.x, screenOrigin.y, 25, WHITE);
-	DrawText(energyText.c_str(), screenOrigin.x, screenOrigin.y + 25, 25, WHITE);
+	DrawText(healthText.c_str(), screenOrigin.x, screenOrigin.y, 25, RED);
+	DrawText(energyText.c_str(), screenOrigin.x, screenOrigin.y + 25, 25, YELLOW);
 }
 
 void Player::Update(Tile tiles[MAP_SIZE][MAP_SIZE], std::vector<Enemy*>& enemies, const Camera2D& cam)
@@ -83,7 +83,10 @@ void Player::Update(Tile tiles[MAP_SIZE][MAP_SIZE], std::vector<Enemy*>& enemies
 	hitbox = { position.x, position.y, (float)playerSprite.width, (float)playerSprite.height };
 
 	// IDEA: clamp the actuall mouseDist float to the toolRange
-	if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && mouseDist <= toolRange){
+	if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && mouseDist <= toolRange && energy > 0){
+		energy--;
+		energyRecharge.Start();
+
 		if (tool == Pickaxe) {
 			int x = mousePos.x / TILE_SIZE;
 			int y = mousePos.y / TILE_SIZE;
@@ -101,6 +104,13 @@ void Player::Update(Tile tiles[MAP_SIZE][MAP_SIZE], std::vector<Enemy*>& enemies
 	}
 	if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)) // tool changing
 		tool = (Tool)(!tool);
+
+
+	if (energyRecharge.Check()) {
+		energy++;
+		if (energy == MAX_ENERGY)
+			energyRecharge.Stop();
+	}
 
 	// Enemy collision
 	// TODO: implement a hit timer so you can

@@ -25,10 +25,11 @@ public:
 	const float speed = 3.0f;
 
 	const int MAX_HEALTH = 5;
-	const int MAX_ENERGY = 3;
+	const int MAX_ENERGY = 5;
 	int health = MAX_HEALTH;
 	int energy = MAX_ENERGY;
 	Timer mercyWindow = Timer(2);
+	Timer energyRecharge = Timer(2);
 
 	Texture2D toolsSprite;
 	Rectangle toolRects[2] = {

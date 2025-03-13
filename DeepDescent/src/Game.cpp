@@ -19,7 +19,7 @@ void Game::Run()
 
 	StartNewLevel();
 
-	while(!WindowShouldClose())
+	while(!WindowShouldClose() && !exitGame)
 	{
 		Update();
 		Draw();
@@ -58,8 +58,7 @@ void Game::Draw()
 }
 void Game::Update()
 {
-	// TEMPORARY KEY BINDING
-	if(IsKeyPressed(KEY_P))
+	if(IsKeyPressed(KEY_F11))
 	{
 		if (IsWindowFullscreen())
 		{ 
@@ -106,7 +105,7 @@ void Game::StartNewLevel()
 }
 
 void Game::TitleScreen() {
-	while (!IsKeyPressed(KEY_SPACE)) {
+	while (!IsKeyPressed(KEY_SPACE) && !exitGame) {
 		BeginDrawing();
 		ClearBackground(BLACK);
 			DrawText("DEEP DESCENT", 0, 0, 50, RAYWHITE);
@@ -114,15 +113,13 @@ void Game::TitleScreen() {
 			DrawText("press <esc> to quit exit", 0, 90, 40, RAYWHITE);
 		EndDrawing();
 
-		// TODO: currently not working
-		if (WindowShouldClose())
-			CloseWindow();
-
+		if (IsKeyPressed(KEY_ESCAPE))
+			exitGame = true;
 	}
 }
 
 void Game::DeathScreen() {
-	while (!IsKeyPressed(KEY_SPACE)) {
+	while (!IsKeyPressed(KEY_SPACE) && !exitGame) {
 		BeginDrawing();
 			ClearBackground(BLACK);
 			DrawText("GAME OVER!", 0, 0, 50, RAYWHITE);
@@ -130,9 +127,8 @@ void Game::DeathScreen() {
 			DrawText("press <esc> to quit game", 0, 90, 40, RAYWHITE);
 		EndDrawing();
 
-		// TODO: currently not working
-		if (WindowShouldClose())
-			CloseWindow();
+		if (IsKeyPressed(KEY_ESCAPE))
+			exitGame = true;
 
 	}
 	StartNewLevel();

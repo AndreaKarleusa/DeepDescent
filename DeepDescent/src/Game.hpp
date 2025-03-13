@@ -14,6 +14,8 @@ public:
 	Map map;
 	Player player;
 	Spawner spawner;
+
+	bool exitGame = false;
 public:
 	Game();
 	~Game();
