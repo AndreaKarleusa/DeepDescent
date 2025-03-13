@@ -25,4 +25,6 @@ public:
 	void CameraSetup();
 
 	void StartNewLevel();
+
+	void DeathScreen();
 };

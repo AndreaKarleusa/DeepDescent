@@ -40,6 +40,7 @@ void Enemy::Update(const Vector2& playerPos){
 	velocity.x = dir.x * speed;
 	velocity.y = dir.y * speed;
 
+	// calculate velocity and move the playe
 	position.x += velocity.x;
 	position.y += velocity.y;
 

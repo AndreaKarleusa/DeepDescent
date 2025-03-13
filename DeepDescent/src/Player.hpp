@@ -11,7 +11,8 @@ enum Tool {
 	Shovel
 };
 
-// gain energy/health each 10 levels ???
+// IDEA: gain energy/health each 10 levels ???
+// TODO: make mining when you hold the mouse down (add a mining timer)
 class Player
 {
 public:
@@ -23,7 +24,7 @@ public:
 	Vector2 velocity;
 	const float speed = 3.0f;
 
-	const int MAX_HEALTH = 15;
+	const int MAX_HEALTH = 5;
 	const int MAX_ENERGY = 3;
 	int health = MAX_HEALTH;
 	int energy = MAX_ENERGY;

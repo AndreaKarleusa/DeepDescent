@@ -84,11 +84,40 @@ void Game::Update()
 		StartNewLevel();
 		player.foundStaircase = false;
 	}
+
+	if (player.health <= 0) {
+		DeathScreen();
+
+		// TODO: make a reset function for the whole player
+		// TODO: make the new level function reset the player HP
+		player.health = player.MAX_HEALTH;
+		player.energy= player.MAX_ENERGY;
+	}
 }
 
 void Game::StartNewLevel()
 {
 	map.Generate();
 	const Vector2 spawnPos = map.GetEmptyTile();
+	
 	player.Spawn(spawnPos);
+	spawner.Clear();
+}
+
+
+void Game::DeathScreen() {
+	while (!IsKeyPressed(KEY_SPACE)) {
+		BeginDrawing();
+			ClearBackground(BLACK);
+			DrawText("GAME OVER!", 0, 0, 50, RAYWHITE);
+			DrawText("press <space> to start again", 0, 50, 40, RAYWHITE);
+			DrawText("press <esc> to quit game", 0, 90, 40, RAYWHITE);
+		EndDrawing();
+
+		// TODO: currently not working
+		if (WindowShouldClose())
+			CloseWindow();
+
+	}
+	StartNewLevel();
 }

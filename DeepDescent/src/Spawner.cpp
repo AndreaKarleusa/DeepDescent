@@ -38,6 +38,17 @@ void Spawner::Update(const Vector2& playerPos) {
 	}
 }
 
+void Spawner::Clear() {
+	for (auto i = 0; i < enemies.size(); i++) {
+		delete enemies[i];
+		enemies.erase(enemies.begin() + i);
+	}
+	// TODO: make a delay functin in the
+	//		 spawner class to delay the 
+	//		 spawn for a certain time
+	spawnTimer.Start();
+}
+
 // -1 is for the array index offset
 Vector2 Spawner::RandomPos() {
 	int x = RandomInt(MAP_SIZE-1);
