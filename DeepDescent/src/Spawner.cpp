@@ -1,6 +1,7 @@
 #include "Spawner.hpp"
 #include "random"
 #include <iostream>
+#include <algorithm>
 using namespace std;
 
 Spawner::Spawner() { spawnTimer.Start(); }
@@ -13,19 +14,28 @@ void Spawner::LoadAssets() {
 
 void Spawner::Draw() {
 	for (const auto& enemy : enemies)
-		enemy.Draw(spriteSheet);
+		enemy->Draw(spriteSheet);
 }
 
+// TODO: create a max enemy count
 void Spawner::Update(const Vector2& playerPos) {
 
 	if (spawnTimer.Check()) {
-		Enemy e = Enemy();
-		e.Spawn(RandomPos());
+		Enemy* e = new Enemy();
+		e->Spawn(RandomPos());
 		enemies.push_back(e);
 	}
 
-	for (auto& enemy : enemies)
-		enemy.Update(playerPos);
+	for (auto i = 0; i < enemies.size(); i++)
+	{
+		// ERROR: removing enemies does not work for some reason
+		if (!enemies[i]->alive) {
+			delete enemies[i];
+			enemies.erase(enemies.begin() + i); // THIS IS THE PROBLEM FUNCITON
+			continue;
+		}
+		enemies[i]->Update(playerPos);
+	}
 }
 
 // -1 is for the array index offset

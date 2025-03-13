@@ -10,11 +10,12 @@ public:
 
 	const int spawnDelay = 5; // in seconds
 	Timer spawnTimer = Timer(spawnDelay);
+	const int MAX_ENEMY_COUNT = 3;
+	int enemyCount = 0;
 
-	std::vector<Enemy> enemies;
+	std::vector<Enemy*> enemies;
 public:
 	Spawner();
-	~Spawner() = default;
 
 	void LoadAssets();
 	void Draw();

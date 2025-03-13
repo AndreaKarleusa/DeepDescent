@@ -35,7 +35,7 @@ void Player::Draw(const Camera2D& cam)
 	DrawText(energyText.c_str(), screenOrigin.x, screenOrigin.y + 25, 25, WHITE);
 }
 
-void Player::Update(Tile tiles[MAP_SIZE][MAP_SIZE], const Camera2D& cam)
+void Player::Update(Tile tiles[MAP_SIZE][MAP_SIZE], std::vector<Enemy*>& enemies, const Camera2D& cam)
 {
 	// player movement
 	direction.x = IsKeyDown(KEY_D) - IsKeyDown(KEY_A);
@@ -80,6 +80,8 @@ void Player::Update(Tile tiles[MAP_SIZE][MAP_SIZE], const Camera2D& cam)
 	};
 	int mouseDist = abs(sqrt(mouseDistVec.x*mouseDistVec.x + mouseDistVec.y*mouseDistVec.y));
 
+	hitbox = { position.x, position.y, (float)playerSprite.width, (float)playerSprite.height };
+
 	// IDEA: clamp the actuall mouseDist float to the toolRange
 	if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && mouseDist <= toolRange){
 		if (tool == Pickaxe) {
@@ -90,12 +92,27 @@ void Player::Update(Tile tiles[MAP_SIZE][MAP_SIZE], const Camera2D& cam)
 				tiles[y][x].Damage(pickaxeDamage);
 		}
 		else {
-			std::cout << "Attacking!\n";
+			for (auto& enemy : enemies) {
+				if (CheckCollisionPointRec(mousePos, enemy->hitbox)) {
+					enemy->Damage(shovelDamage);
+				}
+			}
 		}
 	}
 	if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)) // tool changing
 		tool = (Tool)(!tool);
 
+	// Enemy collision
+	// TODO: implement a hit timer so you can
+	//       only get damaged every 1-2 seconds
+	//       (stun effect)
+	for (auto& enemy : enemies) {
+		if (CheckCollisionRecs(hitbox, enemy->hitbox) && !mercyWindow.running) {
+			health -= enemy->damage;
+			mercyWindow.Start();
+		}
+	}
+	if (mercyWindow.Check()) { mercyWindow.Stop(); }
 }
 
 void Player::Spawn(const Vector2& spawnPos)
@@ -108,8 +125,9 @@ void Player::Spawn(const Vector2& spawnPos)
 // + use iterators to clean up the code
 std::vector<Tile> Player::CheckCollision(Tile tiles[MAP_SIZE][MAP_SIZE])
 {
+	// TODO: clean up this hitbox code
 	std::vector<Tile> collisionTiles;
-	Rectangle hitbox = { position.x, position.y, (float)playerSprite.width, (float)playerSprite.height };
+	hitbox = { position.x, position.y, (float)playerSprite.width, (float)playerSprite.height };
 
 	for (int i = 0; i < MAP_SIZE; i++) {
 	for (int j = 0; j < MAP_SIZE; j++) {

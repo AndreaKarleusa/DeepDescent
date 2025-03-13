@@ -2,6 +2,8 @@
 #include "raylib.h"
 #include "Settings.hpp"
 #include "Map.hpp"
+#include "Enemy.hpp"
+#include "Timer.hpp"
 #include <vector>
 
 enum Tool {
@@ -14,6 +16,7 @@ class Player
 {
 public:
 	Texture2D playerSprite;
+	Rectangle hitbox;
 
 	Vector2 position;
 	Vector2 direction;
@@ -24,6 +27,7 @@ public:
 	const int MAX_ENERGY = 3;
 	int health = MAX_HEALTH;
 	int energy = MAX_ENERGY;
+	Timer mercyWindow = Timer(2);
 
 	Texture2D toolsSprite;
 	Rectangle toolRects[2] = {
@@ -45,7 +49,9 @@ public:
 
 	void LoadAssets();
 	void Draw(const Camera2D& cam);
-	void Update(Tile tiles[MAP_SIZE][MAP_SIZE], const Camera2D& cam);
+	void Update(Tile tiles[MAP_SIZE][MAP_SIZE], 
+				std::vector<Enemy*>& enemies,
+				const Camera2D& cam);
 
 	void Spawn(const Vector2& spawnPos);
 	std::vector<Tile> CheckCollision(Tile tiles[MAP_SIZE][MAP_SIZE]);
