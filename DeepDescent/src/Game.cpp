@@ -11,10 +11,11 @@ void Game::Run()
 {
 	InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE);
 	SetTargetFPS(FPS);
-	
 	HideCursor();
 	CameraSetup();
 	LoadAssets();
+
+	TitleScreen();
 
 	StartNewLevel();
 
@@ -104,6 +105,21 @@ void Game::StartNewLevel()
 	spawner.Clear();
 }
 
+void Game::TitleScreen() {
+	while (!IsKeyPressed(KEY_SPACE)) {
+		BeginDrawing();
+		ClearBackground(BLACK);
+			DrawText("DEEP DESCENT", 0, 0, 50, RAYWHITE);
+			DrawText("press <space> to start", 0, 50, 40, RAYWHITE);
+			DrawText("press <esc> to quit exit", 0, 90, 40, RAYWHITE);
+		EndDrawing();
+
+		// TODO: currently not working
+		if (WindowShouldClose())
+			CloseWindow();
+
+	}
+}
 
 void Game::DeathScreen() {
 	while (!IsKeyPressed(KEY_SPACE)) {

@@ -26,5 +26,6 @@ public:
 
 	void StartNewLevel();
 
+	void TitleScreen();
 	void DeathScreen();
 };
