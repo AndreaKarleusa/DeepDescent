@@ -9,7 +9,7 @@ public:
 
 	Vector2 position;
 	Vector2 velocity;
-	const float speed = 1.5f;
+	const float speed = 2.0f;
 
 	bool alive = true;
 	int MAX_HEALTH = 5;

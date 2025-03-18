@@ -152,6 +152,8 @@ std::vector<Tile> Player::CheckCollision(Tile tiles[MAP_SIZE][MAP_SIZE])
 
 	for (int i = -1; i <= 1; i++) {
 	for (int j = -1; j <= 1; j++) {
+		if (i >= MAP_SIZE || j >= MAP_SIZE) { continue; } // out of bounds check
+
 		auto& tile = tiles[y + i][x + j];
 		if (tile.isEmpty) { continue; }
 

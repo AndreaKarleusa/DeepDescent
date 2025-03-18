@@ -10,12 +10,23 @@ class Spawner {
 public:
 	Texture2D spriteSheet;
 
-	const int spawnDelay = 4; // in seconds
-	Timer spawnTimer = Timer(spawnDelay);
-	const int MAX_ENEMY_COUNT = 3;
+	const float MIN_SPAWN_DELAY = 3.0f;
+	const float MAX_SPAWN_DELAY = 6.0f;
+	Timer spawnTimer = Timer(5.0f);
+	
+	std::vector<Enemy*> enemies;
+	const int MAX_ENEMY_COUNT = 4;
 	int enemyCount = 0;
 
-	std::vector<Enemy*> enemies;
+	// going from the top of the map 
+	// in a clock wise direction
+	Rectangle spawnZones[4] = {
+		{0, -TILE_SIZE, TILE_SIZE * MAP_SIZE, TILE_SIZE},		  // top
+		{TILE_SIZE*MAP_SIZE, 0, TILE_SIZE, TILE_SIZE * MAP_SIZE}, // right
+		{0, TILE_SIZE*MAP_SIZE, TILE_SIZE * MAP_SIZE, TILE_SIZE}, // bottom
+		{-TILE_SIZE, 0, TILE_SIZE, TILE_SIZE*MAP_SIZE},			  // left
+	};
+
 public:
 	Spawner();
 

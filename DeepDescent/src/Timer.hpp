@@ -34,4 +34,9 @@ public:
 		}
 
 	}
+
+	inline void SetDuration(const double& d) {
+		duration = d;
+	}
+
 };

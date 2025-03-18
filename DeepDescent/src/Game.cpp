@@ -177,5 +177,6 @@ void Game::DeathScreen() {
 			exitGame = true;
 
 	}
+	GameplayCameraSetup();
 	StartNewLevel();
 }
