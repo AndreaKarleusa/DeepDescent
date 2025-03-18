@@ -10,6 +10,9 @@
 class Game
 {
 public:
+	const Color TEXT_COLOR = {246, 214, 189, 255};	
+	const Color BG_COLOR = { 8, 20, 30, 255};
+
 	Camera2D camera;
 	Map map;
 	Player player;
@@ -23,11 +26,13 @@ public:
 	void Run();
 	void Draw();
 	void Update();
+
 	void LoadAssets();
 	void CameraSetup();
-
-	void StartNewLevel();
+	void GameplayCameraSetup();
+	void HandleFullscreen();
 
 	void TitleScreen();
 	void DeathScreen();
+	void StartNewLevel();
 };

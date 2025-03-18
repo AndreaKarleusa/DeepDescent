@@ -5,6 +5,7 @@
 #include <vector>
 
 // TODO: clear all enemies on new lever start (
+// TODO: make spawning in whaves
 class Spawner {
 public:
 	Texture2D spriteSheet;

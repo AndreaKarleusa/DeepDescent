@@ -12,11 +12,12 @@ void Game::Run()
 	InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE);
 	SetTargetFPS(FPS);
 	HideCursor();
-	CameraSetup();
 	LoadAssets();
+	CameraSetup();
 
 	TitleScreen();
-
+	
+	GameplayCameraSetup();
 	StartNewLevel();
 
 	while(!WindowShouldClose() && !exitGame)
@@ -43,26 +44,17 @@ void Game::CameraSetup()
 	camera.rotation = 0.0f;
 }
 
-void Game::Draw()
-{
-	BeginDrawing();
-	BeginMode2D(camera);
-
-		ClearBackground(BLACK);
-		map.Draw();
-		player.Draw(camera);
-		spawner.Draw();
-
-	EndMode2D();
-	EndDrawing();
+void Game::GameplayCameraSetup() {
+	camera.offset = { (float)GetScreenWidth() / 2, (float)GetScreenHeight() / 2 };
+	camera.target = { MAP_SIZE * TILE_SIZE / 2, MAP_SIZE * TILE_SIZE / 2 };
 }
-void Game::Update()
-{
-	if(IsKeyPressed(KEY_F11))
+
+void Game::HandleFullscreen() {
+	if (IsKeyPressed(KEY_F11))
 	{
 		if (IsWindowFullscreen())
-		{ 
-			SetWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT); 
+		{
+			SetWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 			camera.zoom = 1.0f;
 		}
 		else
@@ -75,24 +67,34 @@ void Game::Update()
 		ToggleFullscreen();
 		camera.offset = { (float)GetScreenWidth() / 2, (float)GetScreenHeight() / 2 };
 	}
-	
+}
+
+void Game::Draw()
+{
+	BeginDrawing();
+	BeginMode2D(camera);
+
+		ClearBackground(BG_COLOR);
+		map.Draw();
+		player.Draw(camera);
+		spawner.Draw();
+
+	EndMode2D();
+	EndDrawing();
+}
+void Game::Update()
+{
+	HandleFullscreen();
+
 	player.Update(map.tiles, spawner.enemies, camera);
 	map.Update();
 	spawner.Update(player.position);
 
-	if (player.foundStaircase) {
+	if (player.foundStaircase)
 		StartNewLevel();
-		player.foundStaircase = false;
-	}
 
-	if (player.health <= 0) {
+	if (player.health <= 0)
 		DeathScreen();
-
-		// TODO: make a reset function for the whole player
-		// TODO: make the new level function reset the player HP
-		player.health = player.MAX_HEALTH;
-		player.energy= player.MAX_ENERGY;
-	}
 }
 
 void Game::StartNewLevel()
@@ -101,30 +103,74 @@ void Game::StartNewLevel()
 	const Vector2 spawnPos = map.GetEmptyTile();
 	
 	player.Spawn(spawnPos);
+	player.ResetStats();
+	player.foundStaircase = false;
+
 	spawner.Clear();
 }
 
 void Game::TitleScreen() {
 	while (!IsKeyPressed(KEY_SPACE) && !exitGame) {
+		HandleFullscreen();
+		Vector2 screenOrigin = GetScreenToWorld2D({ 0,0 }, camera);
+		Vector2 screenCenter = {
+			screenOrigin.x + GetScreenWidth() / 2,
+			screenOrigin.y + GetScreenHeight() / 2
+		};
+		camera.target = screenCenter;
+
 		BeginDrawing();
-		ClearBackground(BLACK);
-			DrawText("DEEP DESCENT", 0, 0, 50, RAYWHITE);
-			DrawText("press <space> to start", 0, 50, 40, RAYWHITE);
-			DrawText("press <esc> to quit exit", 0, 90, 40, RAYWHITE);
+		BeginMode2D(camera);
+		ClearBackground(BG_COLOR);
+
+			DrawText("DEEP DESCENT", 
+				screenCenter.x - MeasureText("DEEP DESCENT", 50)/2,
+				screenCenter.y - 50,
+				50, TEXT_COLOR);
+			DrawText("press <space> to start", 
+				screenCenter.x - MeasureText("press <space> to start", 20) / 2,
+				screenCenter.y + 20,
+				20, TEXT_COLOR);
+			DrawText("press <esc> to quit", 
+				screenCenter.x - MeasureText("press <esc> to quit", 20) / 2,
+				screenCenter.y + 45,
+				20, TEXT_COLOR);
+
+		EndMode2D();
 		EndDrawing();
 
 		if (IsKeyPressed(KEY_ESCAPE))
 			exitGame = true;
 	}
 }
-
 void Game::DeathScreen() {
 	while (!IsKeyPressed(KEY_SPACE) && !exitGame) {
+		HandleFullscreen();
+		Vector2 screenOrigin = GetScreenToWorld2D({ 0,0 }, camera);
+		Vector2 screenCenter = {
+			screenOrigin.x + GetScreenWidth() / 2,
+			screenOrigin.y + GetScreenHeight() / 2
+		};
+		camera.target = screenCenter;
+
 		BeginDrawing();
-			ClearBackground(BLACK);
-			DrawText("GAME OVER!", 0, 0, 50, RAYWHITE);
-			DrawText("press <space> to start again", 0, 50, 40, RAYWHITE);
-			DrawText("press <esc> to quit game", 0, 90, 40, RAYWHITE);
+		BeginMode2D(camera);
+		ClearBackground(BG_COLOR);
+
+			DrawText("GAME OVER",
+				screenCenter.x - MeasureText("GAME OVER", 50) / 2,
+				screenCenter.y - 50,
+				50, TEXT_COLOR);
+			DrawText("press <space> to restart",
+				screenCenter.x - MeasureText("press <space> to restart", 20) / 2,
+				screenCenter.y + 20,
+				20, TEXT_COLOR);
+			DrawText("press <esc> to quit",
+				screenCenter.x - MeasureText("press <esc> to quit", 20) / 2,
+				screenCenter.y + 45,
+				20, TEXT_COLOR);
+
+		EndMode2D();
 		EndDrawing();
 
 		if (IsKeyPressed(KEY_ESCAPE))

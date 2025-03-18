@@ -22,6 +22,7 @@ void Player::LoadAssets()
 	UnloadImage(toolsImg);
 }
 
+// IDEA: use raylib build in TextFormat function
 void Player::Draw(const Camera2D& cam)
 {
 	DrawTexture(playerSprite, position.x, position.y, WHITE);
@@ -83,9 +84,14 @@ void Player::Update(Tile tiles[MAP_SIZE][MAP_SIZE], std::vector<Enemy*>& enemies
 	hitbox = { position.x, position.y, (float)playerSprite.width, (float)playerSprite.height };
 
 	// IDEA: clamp the actuall mouseDist float to the toolRange
+
+	if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON))
+		tool = (Tool)(!tool);
+
+	// IDEA: only mine when mouse button is down
 	if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && mouseDist <= toolRange && energy > 0){
-		energy--;
-		energyRecharge.Start();
+		//energy--;
+		//energyRecharge.Start();
 
 		if (tool == Pickaxe) {
 			int x = mousePos.x / TILE_SIZE;
@@ -102,20 +108,18 @@ void Player::Update(Tile tiles[MAP_SIZE][MAP_SIZE], std::vector<Enemy*>& enemies
 			}
 		}
 	}
-	if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)) // tool changing
-		tool = (Tool)(!tool);
 
 
+	// IDEA: make the energy a total amount (100)
+	//		 and make enemies drop some of it on 
+	//		 death
+	/* 
 	if (energyRecharge.Check()) {
 		energy++;
 		if (energy == MAX_ENERGY)
 			energyRecharge.Stop();
-	}
+	}*/
 
-	// Enemy collision
-	// TODO: implement a hit timer so you can
-	//       only get damaged every 1-2 seconds
-	//       (stun effect)
 	for (auto& enemy : enemies) {
 		if (CheckCollisionRecs(hitbox, enemy->hitbox) && !mercyWindow.running) {
 			health -= enemy->damage;
@@ -130,25 +134,33 @@ void Player::Spawn(const Vector2& spawnPos)
 	position = spawnPos;
 }
 
+void Player::ResetStats() {
+	health = MAX_HEALTH;
+	energy = MAX_ENERGY;
+}
+
 // OPTIMIZATION:
-// + instead of the whole array of tiles give the function only tiles around the player
 // + use iterators to clean up the code
 std::vector<Tile> Player::CheckCollision(Tile tiles[MAP_SIZE][MAP_SIZE])
 {
+	int x = floor(position.x / TILE_SIZE);
+	int y = floor(position.y / TILE_SIZE);
+	int checks = 0;
 	// TODO: clean up this hitbox code
 	std::vector<Tile> collisionTiles;
 	hitbox = { position.x, position.y, (float)playerSprite.width, (float)playerSprite.height };
 
-	for (int i = 0; i < MAP_SIZE; i++) {
-	for (int j = 0; j < MAP_SIZE; j++) {
-		if (tiles[i][j].isEmpty) { continue; }
+	for (int i = -1; i <= 1; i++) {
+	for (int j = -1; j <= 1; j++) {
+		auto& tile = tiles[y + i][x + j];
+		if (tile.isEmpty) { continue; }
 
-		if (CheckCollisionRecs(hitbox, tiles[i][j].collisionRec)) {
-			collisionTiles.push_back(tiles[i][j]);
+		if (CheckCollisionRecs(hitbox, tile.collisionRec)) {
+			collisionTiles.push_back(tile);
 
-			if (tiles[i][j].isStaircase && tiles[i][j].health <= 0) {
-					foundStaircase = true; 
-					tiles[i][j].isStaircase = false;
+			if (tile.isStaircase && tile.health <= 0) {
+				foundStaircase = true;
+				tile.isStaircase = false;
 			}
 		}
 	}}

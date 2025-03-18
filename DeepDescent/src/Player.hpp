@@ -28,8 +28,10 @@ public:
 	const int MAX_ENERGY = 5;
 	int health = MAX_HEALTH;
 	int energy = MAX_ENERGY;
+
 	Timer mercyWindow = Timer(2);
-	Timer energyRecharge = Timer(2);
+	Timer miningDelay = Timer(0.5);
+	//Timer energyRecharge = Timer(0.6);
 
 	Texture2D toolsSprite;
 	Rectangle toolRects[2] = {
@@ -56,5 +58,6 @@ public:
 				const Camera2D& cam);
 
 	void Spawn(const Vector2& spawnPos);
+	void ResetStats();
 	std::vector<Tile> CheckCollision(Tile tiles[MAP_SIZE][MAP_SIZE]);
 };
