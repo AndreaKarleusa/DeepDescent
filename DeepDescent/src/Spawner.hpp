@@ -10,8 +10,8 @@ class Spawner {
 public:
 	Texture2D spriteSheet;
 
-	const float MIN_SPAWN_DELAY = 3.0f;
-	const float MAX_SPAWN_DELAY = 6.0f;
+	const float MIN_SPAWN_DELAY = 2.5f;
+	const float MAX_SPAWN_DELAY = 5.0f;
 	Timer spawnTimer = Timer(5.0f);
 	
 	std::vector<Enemy*> enemies;

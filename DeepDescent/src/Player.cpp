@@ -63,6 +63,7 @@ void Player::Update(Tile tiles[MAP_SIZE][MAP_SIZE], std::vector<Enemy*>& enemies
 	// out of bounds collision
 	if (position.x <= 0) { position.x = 0; }
 	if (position.x >= MAP_SIZE * TILE_SIZE - playerSprite.width) { position.x = MAP_SIZE * TILE_SIZE - playerSprite.width; }
+
 	if (position.y <= 0) { position.y = 0; }
 	if (position.y >= MAP_SIZE * TILE_SIZE - playerSprite.height) { position.y = MAP_SIZE * TILE_SIZE - playerSprite.height; }
 
@@ -152,7 +153,7 @@ std::vector<Tile> Player::CheckCollision(Tile tiles[MAP_SIZE][MAP_SIZE])
 
 	for (int i = -1; i <= 1; i++) {
 	for (int j = -1; j <= 1; j++) {
-		if (i >= MAP_SIZE || j >= MAP_SIZE) { continue; } // out of bounds check
+		if (y+i >= MAP_SIZE || x+j >= MAP_SIZE) { continue; } // out of bounds check
 
 		auto& tile = tiles[y + i][x + j];
 		if (tile.isEmpty) { continue; }
