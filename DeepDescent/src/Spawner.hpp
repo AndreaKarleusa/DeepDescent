@@ -12,14 +12,12 @@ public:
 
 	const float MIN_SPAWN_DELAY = 2.5f;
 	const float MAX_SPAWN_DELAY = 5.0f;
-	Timer spawnTimer = Timer(5.0f);
+	Timer spawnTimer = Timer(10000.0f); // REMOVE THS LATER !!!
 	
 	std::vector<Enemy*> enemies;
 	const int MAX_ENEMY_COUNT = 4;
 	int enemyCount = 0;
 
-	// going from the top of the map 
-	// in a clock wise direction
 	Rectangle spawnZones[4] = {
 		{0, -TILE_SIZE, TILE_SIZE * MAP_SIZE, TILE_SIZE},		  // top
 		{TILE_SIZE*MAP_SIZE, 0, TILE_SIZE, TILE_SIZE * MAP_SIZE}, // right

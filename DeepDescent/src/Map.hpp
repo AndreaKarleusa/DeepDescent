@@ -16,8 +16,8 @@ public:
 	bool isEmpty = true;
 	bool isStaircase = false;
 
-	const int MAX_HEALTH = 2;
-	int health = MAX_HEALTH;
+	const float MAX_HEALTH = 2.0f;
+	float health = MAX_HEALTH;
 
 public:
 	Tile();
@@ -25,7 +25,7 @@ public:
 	void Generate(Vector2 pos, int sID);
 	void Draw(Texture2D spriteSheet);
 	void Update();
-	void Damage(const int damage);
+	void Damage(const float damage);
 };
 
 //It's simpler just to pick a random distribution

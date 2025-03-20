@@ -119,7 +119,8 @@ void Tile::Draw(Texture2D spriteSheet)
 void Tile::Update()
 {
 	if (health != MAX_HEALTH) {
-		spriteRec.x = 3*TILE_SIZE + defaultSpriteRec.x ; // moves the sprite rec to the broken tile version
+		// moves the sprite rec to the broken tile version
+		spriteRec.x = 3*TILE_SIZE + defaultSpriteRec.x ;
 	}
 	if (health <= 0 && !isStaircase) {
 		spriteRec.x = 0;
@@ -131,7 +132,7 @@ void Tile::Update()
 	}
 }
 
-void Tile::Damage(const int damage) 
+void Tile::Damage(const float damage) 
 {
 	health -= damage;
 }

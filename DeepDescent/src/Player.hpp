@@ -20,9 +20,11 @@ public:
 	Rectangle hitbox;
 
 	Vector2 position;
-	Vector2 direction;
-	Vector2 velocity;
-	const float speed = 3.0f;
+	Vector2 dir;
+	Vector2 vel = { 0.0f, 0.0f };
+	const float MAX_VEL = 3.0f;
+	const float acc = 0.6f;
+	const float fr = 0.14;
 
 	const int MAX_HEALTH = 5;
 	const int MAX_ENERGY = 5;
@@ -41,9 +43,9 @@ public:
 	Vector2 toolPos;
 	Tool tool = Pickaxe;
 
-	const int toolRange = 1.5*TILE_SIZE;
-	const int pickaxeDamage = 1;
-	const int shovelDamage= 5;
+	const float toolRange = 1.5f*TILE_SIZE;
+	const float pickaxeDamage = 1.0f;
+	const float shovelDamage= 5.0f;
 
 	bool foundStaircase = false;
 

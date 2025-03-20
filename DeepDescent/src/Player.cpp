@@ -5,6 +5,7 @@
 #include <vector>
 #include <cmath>
 #include <string>
+#include <algorithm>
 #include <iostream>
 
 Player::Player() {}
@@ -39,25 +40,40 @@ void Player::Draw(const Camera2D& cam)
 void Player::Update(Tile tiles[MAP_SIZE][MAP_SIZE], std::vector<Enemy*>& enemies, const Camera2D& cam)
 {
 	// player movement
-	direction.x = IsKeyDown(KEY_D) - IsKeyDown(KEY_A);
-	direction.y = IsKeyDown(KEY_S) - IsKeyDown(KEY_W);
-	velocity.x = speed * direction.x;
-	velocity.y = speed * direction.y;
+	dir.x = IsKeyDown(KEY_D) - IsKeyDown(KEY_A);
+	dir.y = IsKeyDown(KEY_S) - IsKeyDown(KEY_W);
+
+	float dirLen = sqrt(dir.x*dir.x + dir.y*dir.y);
+	if (dirLen != 0) {
+		dir.x /= dirLen;
+		dir.y /= dirLen;
+	}
+
+	vel.x += acc * dir.x;
+	vel.y += acc * dir.y;
+
+	vel.x -= fr * vel.x;
+	vel.y -= fr * vel.y;
 	
+	vel.x = std::clamp(vel.x, -MAX_VEL, MAX_VEL);
+	vel.y = std::clamp(vel.y, -MAX_VEL, MAX_VEL);
+
 	// move and collide in the x axis
-	position.x += velocity.x;
+	position.x += vel.x;
 	std::vector<Tile> collisionTiles = CheckCollision(tiles);
 	for (const auto& tile : collisionTiles){
-		if (velocity.x > 0) { position.x = tile.collisionRec.x - playerSprite.width; }
-		else if (velocity.x < 0) { position.x = tile.collisionRec.x + TILE_SIZE; }
+		if (vel.x > 0) { position.x = tile.collisionRec.x - playerSprite.width; }
+		else if (vel.x < 0) { position.x = tile.collisionRec.x + TILE_SIZE; }
+		vel.x = 0;
 	}
 
 	// move and collide in the y axis
-	position.y += velocity.y;
+	position.y += vel.y;
 	collisionTiles = CheckCollision(tiles);
 	for (const auto& tile : collisionTiles){
-		if (velocity.y > 0) { position.y = tile.collisionRec.y - playerSprite.height; }
-		else if (velocity.y < 0) { position.y = tile.collisionRec.y + TILE_SIZE; }
+		if (vel.y > 0) { position.y = tile.collisionRec.y - playerSprite.height; }
+		else if (vel.y < 0) { position.y = tile.collisionRec.y + TILE_SIZE; }
+		vel.y = 0;
 	}
 
 	// out of bounds collision
@@ -69,8 +85,8 @@ void Player::Update(Tile tiles[MAP_SIZE][MAP_SIZE], std::vector<Enemy*>& enemies
 
 	// tool logic
 	Vector2 mousePos = GetScreenToWorld2D(GetMousePosition(), cam);
-	toolPos.x = mousePos.x - TILE_SIZE / 2;
-	toolPos.y = mousePos.y - TILE_SIZE / 2;
+	toolPos.x = mousePos.x - (TILE_SIZE / 2);
+	toolPos.y = mousePos.y - (TILE_SIZE / 2);
 
 	// TODO: better variable names
 	// IDEA: just put a bounding box around the player and
@@ -80,7 +96,7 @@ void Player::Update(Tile tiles[MAP_SIZE][MAP_SIZE], std::vector<Enemy*>& enemies
 		mousePos.x - (position.x + playerSprite.width / 2),
 		mousePos.y - (position.y + playerSprite.height / 2)
 	};
-	int mouseDist = abs(sqrt(mouseDistVec.x*mouseDistVec.x + mouseDistVec.y*mouseDistVec.y));
+	float mouseDist = sqrt(mouseDistVec.x*mouseDistVec.x + mouseDistVec.y*mouseDistVec.y);
 
 	hitbox = { position.x, position.y, (float)playerSprite.width, (float)playerSprite.height };
 

@@ -48,6 +48,6 @@ void Enemy::Update(const Vector2& playerPos){
 	hitbox.y = position.y;
 }
 
-void Enemy::Damage(const int& damage) {
+void Enemy::Damage(const float& damage) {
 	health -= damage;
 }

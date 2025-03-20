@@ -12,9 +12,9 @@ public:
 	const float speed = 2.0f;
 
 	bool alive = true;
-	int MAX_HEALTH = 5;
-	int health = MAX_HEALTH;
-	int damage = 1;
+	const float MAX_HEALTH = 5.0f;
+	float health = MAX_HEALTH;
+	const float damage = 1.0f;
 public:
 	Enemy();
 
@@ -23,5 +23,5 @@ public:
 
 	void Spawn(const Vector2& pos);
 	void Attack(); 
-	void Damage(const int& damage);
+	void Damage(const float& damage);
 };
