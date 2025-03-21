@@ -33,7 +33,6 @@ void Spawner::Update(const Vector2& playerPos) {
 		spawnTimer.Stop();
 		spawnTimer.SetDuration(newSpawnDelay);
 		spawnTimer.Start();
-
 	}
 
 	// TODO: there has to be a better way to write this
@@ -55,6 +54,7 @@ void Spawner::Clear() {
 		delete enemies[i];
 		enemies.erase(enemies.begin() + i);
 	}
+	enemyCount = 0;
 	spawnTimer.Stop();
 	spawnTimer.Start();
 }
