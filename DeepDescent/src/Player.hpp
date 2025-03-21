@@ -56,7 +56,10 @@ public:
 	~Player();
 
 	void LoadAssets();
-	void Draw(const Camera2D& cam);
+	void Draw();
+
+	// IDEA: pass in the map and spawner objects
+	//		 to make the arguments cleaner
 	void Update(Tile tiles[MAP_SIZE][MAP_SIZE], 
 				std::vector<Enemy*>& enemies,
 				const Camera2D& cam);

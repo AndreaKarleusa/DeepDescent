@@ -18,6 +18,10 @@ public:
 	Player player;
 	Spawner spawner;
 
+	// In the StartNewLevel function it increments
+	// so it has to be 0 now so when the first 
+	// level loads it can be 1
+	int caveLevel = 0;
 	bool exitGame = false;
 public:
 	Game();
@@ -31,6 +35,7 @@ public:
 	void CameraSetup();
 	void GameplayCameraSetup();
 	void HandleFullscreen();
+	void DrawUI();
 
 	void TitleScreen();
 	void DeathScreen();

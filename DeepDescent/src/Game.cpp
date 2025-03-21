@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <string>
 
 Game::Game(){}
 Game::~Game(){}
@@ -69,6 +70,15 @@ void Game::HandleFullscreen() {
 	}
 }
 
+void Game::DrawUI() {
+	Vector2 screenOrigin = GetScreenToWorld2D({ 0,0 }, camera);
+	std::string levelText = "LEVEL: " + std::to_string(caveLevel);
+	std::string healthText = "HEALTH: " + std::to_string(player.health);
+
+	DrawText(levelText.c_str(), screenOrigin.x + 10, screenOrigin.y, 30, WHITE);
+	DrawText(healthText.c_str(), screenOrigin.x + 10, screenOrigin.y + 30, 30, RED);
+}
+
 void Game::Draw()
 {
 	BeginDrawing();
@@ -78,6 +88,7 @@ void Game::Draw()
 		map.Draw();
 		player.Draw(camera);
 		spawner.Draw();
+		DrawUI();
 
 	EndMode2D();
 	EndDrawing();
@@ -107,6 +118,8 @@ void Game::StartNewLevel()
 	player.foundStaircase = false;
 
 	spawner.Clear();
+
+	caveLevel++;
 }
 
 void Game::TitleScreen() {
