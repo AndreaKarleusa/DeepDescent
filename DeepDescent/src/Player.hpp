@@ -25,6 +25,7 @@ public:
 	const float MAX_VEL = 3.0f;
 	const float acc = 0.6f;
 	const float fr = 0.14;
+	const float knockback = 2.0f;
 
 	const int MAX_HEALTH = 5;
 	const int MAX_ENERGY = 5;
@@ -43,9 +44,10 @@ public:
 	Vector2 toolPos;
 	Tool tool = Pickaxe;
 
-	const float toolRange = 1.5f*TILE_SIZE;
+	const float toolRange = 2.0f*TILE_SIZE;
+	const float toolKnockback = 4.0f;
 	const float pickaxeDamage = 1.0f;
-	const float shovelDamage= 5.0f;
+	const float shovelDamage= 1.0f;
 
 	bool foundStaircase = false;
 

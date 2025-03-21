@@ -10,9 +10,10 @@ class Spawner {
 public:
 	Texture2D spriteSheet;
 
-	const float MIN_SPAWN_DELAY = 2.5f;
-	const float MAX_SPAWN_DELAY = 5.0f;
-	Timer spawnTimer = Timer(10000.0f); // REMOVE THS LATER !!!
+	//  TESTING
+	const float MIN_SPAWN_DELAY = 2.0f;
+	const float MAX_SPAWN_DELAY = 4.0f;
+	Timer spawnTimer = Timer(2.0f); // REMOVE THS LATER !!!
 	
 	std::vector<Enemy*> enemies;
 	const int MAX_ENEMY_COUNT = 4;

@@ -100,8 +100,6 @@ void Player::Update(Tile tiles[MAP_SIZE][MAP_SIZE], std::vector<Enemy*>& enemies
 
 	hitbox = { position.x, position.y, (float)playerSprite.width, (float)playerSprite.height };
 
-	// IDEA: clamp the actuall mouseDist float to the toolRange
-
 	if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON))
 		tool = (Tool)(!tool);
 
@@ -121,6 +119,7 @@ void Player::Update(Tile tiles[MAP_SIZE][MAP_SIZE], std::vector<Enemy*>& enemies
 			for (auto& enemy : enemies) {
 				if (CheckCollisionPointRec(mousePos, enemy->hitbox)) {
 					enemy->Damage(shovelDamage);
+					enemy->Knockback(toolKnockback);
 				}
 			}
 		}
@@ -138,10 +137,19 @@ void Player::Update(Tile tiles[MAP_SIZE][MAP_SIZE], std::vector<Enemy*>& enemies
 	}*/
 
 	for (auto& enemy : enemies) {
-		if (CheckCollisionRecs(hitbox, enemy->hitbox) && !mercyWindow.running) {
+		if (!CheckCollisionRecs(hitbox, enemy->hitbox))
+			continue;
+
+		if (!mercyWindow.running) {
 			health -= enemy->damage;
 			mercyWindow.Start();
 		}
+
+		Vector2 enemyDir = enemy->GetDirection();
+		enemy->Knockback(toolKnockback);
+
+		vel.x += knockback * enemyDir.x;
+		vel.y += knockback * enemyDir.y;
 	}
 	if (mercyWindow.Check()) { mercyWindow.Stop(); }
 }

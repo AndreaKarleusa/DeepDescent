@@ -4,50 +4,59 @@
 Enemy::Enemy() {}
 
 void Enemy::Draw(const Texture2D& spriteSheet) const {
-	DrawTextureRec(spriteSheet, spriteRect, position, WHITE);
+	DrawTextureRec(spriteSheet, spriteRect, pos, WHITE);
 }
 
-void Enemy::Spawn(const Vector2& pos) {
-	position = pos;
+void Enemy::Spawn(const Vector2& position) {
+	pos = position;
 	spriteRect = {
 		0, 0, TILE_SIZE, TILE_SIZE
 	};
 	hitbox = { pos.x, pos.y,
 			   spriteRect.width, spriteRect.height
 	};
+	movementTimer.Start();
 }
 
-// TODO: physics
 void Enemy::Update(const Vector2& playerPos){
 	if (health <= 0) {
 		alive = false;
 		return;
 	}
 
-	// calculate distance vector
-	Vector2 dir = {
-		playerPos.x - position.x,
-		playerPos.y - position.y
-	};
+	if (movementTimer.Check()) {
+		dir.x = playerPos.x - pos.x;
+		dir.y = playerPos.y - pos.y;
 
-	// normalize the vector
-	const float length = abs(sqrt(dir.x*dir.x + dir.y*dir.y));
-	if (length == 0) { return; }
-	dir.x /= length;
-	dir.y /= length;
+		const float dirLen = sqrt(dir.x * dir.x + dir.y * dir.y);
+		if (dirLen == 0)
+			return;
+		dir.x /= dirLen;
+		dir.y /= dirLen;
 
-	// calculate velocity and move the player
-	velocity.x = dir.x * speed;
-	velocity.y = dir.y * speed;
+		vel.x += acc * dir.x;
+		vel.y += acc * dir.y;
+	}
 
-	// calculate velocity and move the playe
-	position.x += velocity.x;
-	position.y += velocity.y;
+	vel.x -= fr * vel.x;
+	vel.y -= fr * vel.y;
 
-	hitbox.x = position.x;
-	hitbox.y = position.y;
+	pos.x += vel.x;
+	pos.y += vel.y;
+
+	hitbox.x = pos.x;
+	hitbox.y = pos.y;
 }
 
 void Enemy::Damage(const float& damage) {
 	health -= damage;
+}
+
+Vector2 Enemy::GetDirection() {
+	return dir;
+}
+
+void Enemy::Knockback(const int& knockback) {
+	vel.x += knockback * -dir.x;
+	vel.y += knockback * -dir.y;
 }
