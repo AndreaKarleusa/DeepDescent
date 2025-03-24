@@ -147,6 +147,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\enemies.png" />
+    <Image Include="assets\gameplay.png" />
     <Image Include="assets\player.png" />
     <Image Include="assets\tiles.png" />
     <Image Include="assets\FirstSceneDraft.png" />

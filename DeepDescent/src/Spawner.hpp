@@ -10,7 +10,7 @@ class Spawner {
 public:
 	Texture2D spriteSheet;
 
-	const float MIN_SPAWN_DELAY = 3.0f;
+	const float MIN_SPAWN_DELAY = 3.2f;
 	const float MAX_SPAWN_DELAY = 5.0f;
 	Timer spawnTimer = Timer(MIN_SPAWN_DELAY);
 	

@@ -1,6 +1,7 @@
 #pragma once
 #include "raylib.h"
 #include "Settings.hpp"
+#include <random>
 
 
 class Tile {
@@ -38,6 +39,9 @@ public:
 
 	const int MAX_TILE_ID = 4; 
 
+	std::random_device rd;
+	std::mt19937 gen = std::mt19937(rd());
+
 public:
 	Map();
 	~Map();
@@ -49,8 +53,10 @@ public:
 	
 	void Generate();
 	void GenerateStaircase();
+
 	int RandomInt(const int& maxInt);
-	
+	float RandomFloat();
+
 	Vector2 GetEmptyTile();
 
 	

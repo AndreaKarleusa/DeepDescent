@@ -86,7 +86,7 @@ void Game::Draw()
 
 		ClearBackground(BG_COLOR);
 		map.Draw();
-		player.Draw(camera);
+		player.Draw();
 		spawner.Draw();
 		DrawUI();
 
@@ -192,4 +192,5 @@ void Game::DeathScreen() {
 	}
 	GameplayCameraSetup();
 	StartNewLevel();
+	caveLevel = 0;
 }

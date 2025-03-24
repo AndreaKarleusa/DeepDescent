@@ -35,6 +35,12 @@ public:
 
 	}
 
+	inline void Reset() {
+		startTime = 0;
+		currentTime = 0;
+		running = false;
+	}
+
 	inline void SetDuration(const double& d) {
 		duration = d;
 	}

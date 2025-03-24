@@ -73,6 +73,9 @@
     <Image Include="assets\player.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="assets\gameplay.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="ideas.md" />

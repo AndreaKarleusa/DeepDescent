@@ -53,8 +53,8 @@ void Spawner::Clear() {
 	for (auto i = 0; i < enemies.size(); i++) {
 		delete enemies[i];
 		enemies.erase(enemies.begin() + i);
+		enemyCount--;
 	}
-	enemyCount = 0;
 	spawnTimer.Stop();
 	spawnTimer.Start();
 }
@@ -66,10 +66,6 @@ Vector2 Spawner::RandomPos() {
 
 	int x = spawnZone.x + RandomInt(spawnZone.width);
 	int y = spawnZone.y + RandomInt(spawnZone.height);
-
-	//int x = RandomInt(MAP_SIZE-1);
-	//int y = RandomInt(MAP_SIZE-1);
-	//return Vector2{ (float)(x*TILE_SIZE), (float)(y*TILE_SIZE) };
 
 	return Vector2 { (float)(x), (float)(y) };
 }
