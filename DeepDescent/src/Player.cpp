@@ -26,7 +26,7 @@ void Player::LoadAssets()
 void Player::Draw()
 {
 	DrawTexture(playerSprite, position.x, position.y, WHITE);
-	DrawTextureRec(toolsSprite, toolRects[tool], toolPos, WHITE);
+	DrawTextureRec(toolsSprite, toolRects[tool], toolPos, toolOpacity);
 }
 
 void Player::Update(const float dt, Tile tiles[MAP_SIZE][MAP_SIZE], std::vector<Enemy*>& enemies, const Camera2D& cam)
@@ -94,6 +94,9 @@ void Player::Update(const float dt, Tile tiles[MAP_SIZE][MAP_SIZE], std::vector<
 
 	if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON))
 		tool = (Tool)(!tool);
+
+	
+	toolOpacity = (mouseDist <= toolRange) ? FullOpacity : HalfOpacity;
 
 	// IDEA: only mine when mouse button is down
 	if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && mouseDist <= toolRange && energy > 0){

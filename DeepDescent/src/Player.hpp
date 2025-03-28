@@ -43,7 +43,11 @@ public:
 	};
 	Vector2 toolPos;
 	Tool tool = Pickaxe;
+	Color toolOpacity = {0, 0, 0, 0};
+	Color FullOpacity = { 255, 255, 255, 255 };
+	Color HalfOpacity = { 255, 255, 255, 170 };
 
+	bool toolInRange = false;
 	const float toolRange = 2.0f*TILE_SIZE;
 	const float toolKnockback = 30.0f;
 	const float pickaxeDamage = 1.0f;
