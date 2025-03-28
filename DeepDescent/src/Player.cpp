@@ -29,7 +29,7 @@ void Player::Draw()
 	DrawTextureRec(toolsSprite, toolRects[tool], toolPos, WHITE);
 }
 
-void Player::Update(Tile tiles[MAP_SIZE][MAP_SIZE], std::vector<Enemy*>& enemies, const Camera2D& cam)
+void Player::Update(const float dt, Tile tiles[MAP_SIZE][MAP_SIZE], std::vector<Enemy*>& enemies, const Camera2D& cam)
 {
 	// player movement
 	dir.x = IsKeyDown(KEY_D) - IsKeyDown(KEY_A);
@@ -41,11 +41,11 @@ void Player::Update(Tile tiles[MAP_SIZE][MAP_SIZE], std::vector<Enemy*>& enemies
 		dir.y /= dirLen;
 	}
 
-	vel.x += acc * dir.x;
-	vel.y += acc * dir.y;
+	vel.x += acc * dir.x * dt;
+	vel.y += acc * dir.y * dt;
 
-	vel.x -= fr * vel.x;
-	vel.y -= fr * vel.y;
+	vel.x -= fr * vel.x * dt;
+	vel.y -= fr * vel.y * dt;
 	
 	vel.x = std::clamp(vel.x, -MAX_VEL, MAX_VEL);
 	vel.y = std::clamp(vel.y, -MAX_VEL, MAX_VEL);
@@ -111,7 +111,7 @@ void Player::Update(Tile tiles[MAP_SIZE][MAP_SIZE], std::vector<Enemy*>& enemies
 			for (auto& enemy : enemies) {
 				if (CheckCollisionPointRec(mousePos, enemy->hitbox)) {
 					enemy->Damage(shovelDamage);
-					enemy->Knockback(toolKnockback);
+					enemy->Knockback(dt, toolKnockback);
 				}
 			}
 		}
@@ -138,10 +138,10 @@ void Player::Update(Tile tiles[MAP_SIZE][MAP_SIZE], std::vector<Enemy*>& enemies
 		}
 
 		Vector2 enemyDir = enemy->GetDirection();
-		enemy->Knockback(toolKnockback);
+		enemy->Knockback(dt, toolKnockback);
 
-		vel.x += knockback * enemyDir.x;
-		vel.y += knockback * enemyDir.y;
+		vel.x += knockback * enemyDir.x * dt;
+		vel.y += knockback * enemyDir.y * dt;
 	}
 	if (mercyWindow.Check()) { mercyWindow.Stop(); }
 }

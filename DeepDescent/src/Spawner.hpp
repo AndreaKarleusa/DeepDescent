@@ -4,6 +4,7 @@
 #include "raylib.h"
 #include <vector>
 
+
 // TODO: clear all enemies on new lever start (
 // TODO: make spawning in whaves
 class Spawner {
@@ -19,10 +20,10 @@ public:
 	int enemyCount = 0;
 
 	Rectangle spawnZones[4] = {
-		{0, -TILE_SIZE, TILE_SIZE * MAP_SIZE, TILE_SIZE},		  // top
-		{TILE_SIZE*MAP_SIZE, 0, TILE_SIZE, TILE_SIZE * MAP_SIZE}, // right
-		{0, TILE_SIZE*MAP_SIZE, TILE_SIZE * MAP_SIZE, TILE_SIZE}, // bottom
-		{-TILE_SIZE, 0, TILE_SIZE, TILE_SIZE*MAP_SIZE},			  // left
+		{0, -TILE_SIZE*2, TILE_SIZE * MAP_SIZE, TILE_SIZE},		  // top
+		{TILE_SIZE*MAP_SIZE+TILE_SIZE, 0, TILE_SIZE, TILE_SIZE * MAP_SIZE}, // right
+		{0, TILE_SIZE*MAP_SIZE+TILE_SIZE, TILE_SIZE * MAP_SIZE, TILE_SIZE}, // bottom
+		{-TILE_SIZE*2, 0, TILE_SIZE, TILE_SIZE*MAP_SIZE},			  // left
 	};
 
 public:
@@ -30,7 +31,7 @@ public:
 
 	void LoadAssets();
 	void Draw();
-	void Update(const Vector2& playerPos);
+	void Update(const float dt, const Vector2& playerPos);
 	void Clear();
 
 	Vector2 RandomPos();

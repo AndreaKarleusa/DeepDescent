@@ -18,7 +18,7 @@ void Enemy::Spawn(const Vector2& position) {
 	movementTimer.Start();
 }
 
-void Enemy::Update(const Vector2& playerPos){
+void Enemy::Update(const float dt, const Vector2& playerPos){
 	if (health <= 0) {
 		alive = false;
 		return;
@@ -34,12 +34,12 @@ void Enemy::Update(const Vector2& playerPos){
 		dir.x /= dirLen;
 		dir.y /= dirLen;
 
-		vel.x += acc * dir.x;
-		vel.y += acc * dir.y;
+		vel.x += acc * dir.x * dt;
+		vel.y += acc * dir.y * dt;
 	}
 
-	vel.x -= fr * vel.x;
-	vel.y -= fr * vel.y;
+	vel.x -= fr * vel.x * dt;
+	vel.y -= fr * vel.y * dt;
 
 	pos.x += vel.x;
 	pos.y += vel.y;
@@ -56,7 +56,7 @@ Vector2 Enemy::GetDirection() {
 	return dir;
 }
 
-void Enemy::Knockback(const int& knockback) {
-	vel.x += knockback * -dir.x;
-	vel.y += knockback * -dir.y;
+void Enemy::Knockback(const float dt, const int& knockback) {
+	vel.x += knockback * -dir.x * dt;
+	vel.y += knockback * -dir.y * dt;
 }

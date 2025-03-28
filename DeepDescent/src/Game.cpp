@@ -96,10 +96,11 @@ void Game::Draw()
 void Game::Update()
 {
 	HandleFullscreen();
+	float dt = GetFrameTime();
 
-	player.Update(map.tiles, spawner.enemies, camera);
+	player.Update(dt, map.tiles, spawner.enemies, camera);
 	map.Update();
-	spawner.Update(player.position);
+	spawner.Update(dt, player.position);
 
 	if (player.foundStaircase)
 		StartNewLevel();
@@ -192,5 +193,5 @@ void Game::DeathScreen() {
 	}
 	GameplayCameraSetup();
 	StartNewLevel();
-	caveLevel = 0;
+	caveLevel = 1;
 }

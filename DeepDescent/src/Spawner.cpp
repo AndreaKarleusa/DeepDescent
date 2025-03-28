@@ -17,7 +17,7 @@ void Spawner::Draw() {
 		enemy->Draw(spriteSheet);
 }
 
-void Spawner::Update(const Vector2& playerPos) {
+void Spawner::Update(const float dt, const Vector2& playerPos) {
 
 	if (spawnTimer.Check()) {
 		int spawnCount = RandomInt(MAX_ENEMY_COUNT - enemyCount);
@@ -39,7 +39,7 @@ void Spawner::Update(const Vector2& playerPos) {
 	for (auto i = 0; i < enemies.size(); i++)
 	{
 		if (enemies[i]->alive) {
-			enemies[i]->Update(playerPos);
+			enemies[i]->Update(dt, playerPos);
 		}
 		else {
 			delete enemies[i];
@@ -50,12 +50,13 @@ void Spawner::Update(const Vector2& playerPos) {
 }
 
 void Spawner::Clear() {
-	for (auto i = 0; i < enemies.size(); i++) {
-		delete enemies[i];
-		enemies.erase(enemies.begin() + i);
+	for (auto& e : enemies) {
 		enemyCount--;
+		delete e;
 	}
-	spawnTimer.Stop();
+	enemies.clear();
+
+	spawnTimer.Reset();
 	spawnTimer.Start();
 }
 
