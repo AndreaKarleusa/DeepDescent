@@ -22,6 +22,8 @@ public:
 	// so it has to be 0 now so when the first 
 	// level loads it can be 1
 	int caveLevel = 0;
+	int highscore = 0;
+
 	bool exitGame = false;
 public:
 	Game();

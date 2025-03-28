@@ -158,6 +158,13 @@ void Game::TitleScreen() {
 	}
 }
 void Game::DeathScreen() {
+	const int textMargin = 20;
+
+	highscore = (caveLevel > highscore) ? caveLevel : highscore;
+	const std::string highscoreText = "Highscore: " + std::to_string(highscore);
+	const std::string scoreText = "Score: " + std::to_string(caveLevel);
+
+
 	while (!IsKeyPressed(KEY_SPACE) && !exitGame) {
 		HandleFullscreen();
 		Vector2 screenOrigin = GetScreenToWorld2D({ 0,0 }, camera);
@@ -172,18 +179,28 @@ void Game::DeathScreen() {
 		ClearBackground(BG_COLOR);
 
 			DrawText("GAME OVER",
-				screenCenter.x - MeasureText("GAME OVER", 50) / 2,
-				screenCenter.y - 50,
-				50, TEXT_COLOR);
+				screenCenter.x - MeasureText("GAME OVER", 60) / 2,
+				screenCenter.y - 80,
+				60, TEXT_COLOR);
+
+			DrawText(scoreText.c_str(),
+				screenCenter.x - MeasureText(scoreText.c_str(), 20) / 2,
+				screenCenter.y + 0 + textMargin,
+				20, TEXT_COLOR);
+			DrawText(highscoreText.c_str(),
+				screenCenter.x - MeasureText(highscoreText.c_str(), 20) / 2,
+				screenCenter.y + 20 + textMargin,
+				20, TEXT_COLOR);
+
 			DrawText("press <space> to restart",
 				screenCenter.x - MeasureText("press <space> to restart", 20) / 2,
-				screenCenter.y + 20,
+				screenCenter.y + 60 + textMargin,
 				20, TEXT_COLOR);
 			DrawText("press <esc> to quit",
 				screenCenter.x - MeasureText("press <esc> to quit", 20) / 2,
-				screenCenter.y + 45,
+				screenCenter.y + 80 + textMargin,
 				20, TEXT_COLOR);
-
+			
 		EndMode2D();
 		EndDrawing();
 
