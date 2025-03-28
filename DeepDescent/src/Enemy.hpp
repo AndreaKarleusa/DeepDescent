@@ -11,10 +11,10 @@ public:
 	Vector2 pos;
 	Vector2 dir = { 0.0f, 0.0f };
 	Vector2 vel = { 0.0f, 0.0f };
-	const float acc = 70.0f;
+	const float acc = 65.0f;
 	const float fr = 0.8f;
 
-	const float moveDelay = 0.8f;
+	const float moveDelay = 0.75f;
 	Timer movementTimer = Timer(moveDelay);
 
 	bool alive = true;
@@ -29,7 +29,7 @@ public:
 
 	void Spawn(const Vector2& position);
 	void Attack(); 
-	void Damage(const float& damage);
-	Vector2 GetDirection();
-	void Knockback(const float dt, const int& knockback);
+	void Damage(const float& dt, const float& damage);
+	Vector2 GetDirection(); 
+	void Knockback(const float dt, const float& knockback, const Vector2& knockbackDir);
 };

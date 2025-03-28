@@ -47,6 +47,23 @@ void Spawner::Update(const float dt, const Vector2& playerPos) {
 			enemyCount--;
 		}
 	}
+
+	for (int i = 0; i < enemies.size(); i++) {
+		for (int j = 0; j < enemies.size(); j++) {
+			if (enemies[i] == enemies[j])
+				continue;
+
+			if (CheckCollisionRecs(enemies[i]->hitbox, enemies[j]->hitbox)) {
+
+				const Vector2 knockbackDir = {enemies[i]->pos.x - enemies[j]->pos.x,
+											  enemies[i]->pos.y - enemies[j]->pos.y, };
+
+				enemies[i]->Knockback(dt, enemyKnockback, knockbackDir);
+			}
+		}
+
+	}
+
 }
 
 void Spawner::Clear() {

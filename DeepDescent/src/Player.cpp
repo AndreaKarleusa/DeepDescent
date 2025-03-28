@@ -110,8 +110,10 @@ void Player::Update(const float dt, Tile tiles[MAP_SIZE][MAP_SIZE], std::vector<
 		else {
 			for (auto& enemy : enemies) {
 				if (CheckCollisionPointRec(mousePos, enemy->hitbox)) {
-					enemy->Damage(shovelDamage);
-					enemy->Knockback(dt, toolKnockback);
+					Vector2 knockbackDir = { -enemy->GetDirection().x, -enemy->GetDirection().y};
+
+					enemy->Damage(dt, shovelDamage);
+					enemy->Knockback(dt, toolKnockback, knockbackDir);
 				}
 			}
 		}
@@ -138,7 +140,8 @@ void Player::Update(const float dt, Tile tiles[MAP_SIZE][MAP_SIZE], std::vector<
 		}
 
 		Vector2 enemyDir = enemy->GetDirection();
-		enemy->Knockback(dt, toolKnockback);
+		Vector2 knockbackDir = { -enemyDir.x, -enemyDir.y };
+		enemy->Knockback(dt, toolKnockback, knockbackDir);
 
 		vel.x += knockback * enemyDir.x * dt;
 		vel.y += knockback * enemyDir.y * dt;
