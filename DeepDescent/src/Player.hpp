@@ -23,7 +23,7 @@ public:
 	Vector2 dir;
 	Vector2 vel = { 0.0f, 0.0f };
 	const float MAX_VEL = 30.0f;
-	const float acc = 10.0f;
+	const float acc = 12.0f;
 	const float fr = 4.0f;
 	const float knockback = 20.0f;
 
@@ -33,7 +33,7 @@ public:
 	int energy = MAX_ENERGY;
 
 	Timer mercyWindow = Timer(1.6); // duration of invincibility when hit
-	Timer miningDelay = Timer(0.5);
+	Timer miningTimer = Timer(0.4);
 	//Timer energyRecharge = Timer(0.6);
 
 	Texture2D toolsSprite;
@@ -71,5 +71,9 @@ public:
 
 	void Spawn(const Vector2& spawnPos);
 	void ResetStats();
+	
+	void HandlePickaxe(const Vector2& mousePos, const float& mouseDist, Tile tiles[MAP_SIZE][MAP_SIZE]);
+	void HandleShovel(const Vector2& mousePos, const float& mouseDist, std::vector<Enemy*> enemies, const float& dt);
+
 	std::vector<Tile> CheckCollision(Tile tiles[MAP_SIZE][MAP_SIZE]);
 };

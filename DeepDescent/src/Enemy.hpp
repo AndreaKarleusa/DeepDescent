@@ -11,8 +11,8 @@ public:
 	Vector2 pos;
 	Vector2 dir = { 0.0f, 0.0f };
 	Vector2 vel = { 0.0f, 0.0f };
-	const float acc = 65.0f;
-	const float fr = 0.8f;
+	const float acc = 70.0f;
+	const float fr = 0.85f;
 
 	const float moveDelay = 0.75f;
 	Timer movementTimer = Timer(moveDelay);

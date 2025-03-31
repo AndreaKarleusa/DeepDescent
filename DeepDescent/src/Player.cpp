@@ -92,48 +92,21 @@ void Player::Update(const float dt, Tile tiles[MAP_SIZE][MAP_SIZE], std::vector<
 
 	hitbox = { position.x, position.y, (float)playerSprite.width, (float)playerSprite.height };
 
-	if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON))
+	if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)) {
 		tool = (Tool)(!tool);
-
+		miningTimer.Reset();
+	}
 	
 	toolOpacity = (mouseDist <= toolRange) ? FullOpacity : HalfOpacity;
 
-	// IDEA: only mine when mouse button is down
-	if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && mouseDist <= toolRange && energy > 0){
-		//energy--;
-		//energyRecharge.Start();
+	if (tool == Pickaxe)
+		HandlePickaxe(mousePos, mouseDist, tiles);
+	else if (tool == Shovel)
+		HandleShovel(mousePos, mouseDist, enemies, dt);
 
-		if (tool == Pickaxe) {
-			int x = mousePos.x / TILE_SIZE;
-			int y = mousePos.y / TILE_SIZE;
-
-			if (!tiles[y][x].isEmpty)
-				tiles[y][x].Damage(pickaxeDamage);
-		}
-		else {
-			for (auto& enemy : enemies) {
-				if (CheckCollisionPointRec(mousePos, enemy->hitbox)) {
-					Vector2 knockbackDir = { -enemy->GetDirection().x, -enemy->GetDirection().y};
-
-					enemy->Damage(dt, shovelDamage);
-					enemy->Knockback(dt, toolKnockback, knockbackDir);
-				}
-			}
-		}
-	}
-
-
-	// IDEA: make the energy a total amount (100)
-	//		 and make enemies drop some of it on 
-	//		 death
-	/* 
-	if (energyRecharge.Check()) {
-		energy++;
-		if (energy == MAX_ENERGY)
-			energyRecharge.Stop();
-	}*/
 
 	for (auto& enemy : enemies) {
+
 		if (!CheckCollisionRecs(hitbox, enemy->hitbox))
 			continue;
 
@@ -152,6 +125,45 @@ void Player::Update(const float dt, Tile tiles[MAP_SIZE][MAP_SIZE], std::vector<
 	if (mercyWindow.Check()) { mercyWindow.Stop(); }
 }
 
+void Player::HandlePickaxe(const Vector2& mousePos, const float& mouseDist, Tile tiles[MAP_SIZE][MAP_SIZE]) {
+	
+	if (mouseDist > toolRange)
+		return;
+
+	if (IsMouseButtonDown(MOUSE_LEFT_BUTTON) && !miningTimer.running)
+		miningTimer.Start();
+	else if (IsMouseButtonUp(MOUSE_LEFT_BUTTON))
+		miningTimer.Reset();
+
+	if (miningTimer.Check()) {
+		int x = mousePos.x / TILE_SIZE;
+		int y = mousePos.y / TILE_SIZE;
+
+		if ((x < 0 || x > MAP_SIZE) || (y < 0 || y > MAP_SIZE))
+			return;
+
+		if (!tiles[y][x].isEmpty)
+			tiles[y][x].Damage(pickaxeDamage);
+	}
+}
+
+void Player::HandleShovel(const Vector2& mousePos, const float& mouseDist, std::vector<Enemy*> enemies, const float& dt ) {
+	if (mouseDist > toolRange)
+		return;
+
+	if (!IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+		return;
+	
+	for (auto& enemy : enemies) {
+		if (CheckCollisionPointRec(mousePos, enemy->hitbox)) {
+			Vector2 knockbackDir = { -enemy->GetDirection().x, -enemy->GetDirection().y };
+
+			enemy->Damage(dt, shovelDamage);
+			enemy->Knockback(dt, toolKnockback, knockbackDir);
+		}
+	}
+}
+
 void Player::Spawn(const Vector2& spawnPos)
 {
 	position = spawnPos;
@@ -168,7 +180,7 @@ std::vector<Tile> Player::CheckCollision(Tile tiles[MAP_SIZE][MAP_SIZE])
 {
 	int x = floor(position.x / TILE_SIZE);
 	int y = floor(position.y / TILE_SIZE);
-	int checks = 0;
+
 	// TODO: clean up this hitbox code
 	std::vector<Tile> collisionTiles;
 	hitbox = { position.x, position.y, (float)playerSprite.width, (float)playerSprite.height };
