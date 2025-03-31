@@ -58,7 +58,7 @@ void Spawner::Update(const float dt, const Vector2& playerPos) {
 				const Vector2 knockbackDir = {enemies[i]->pos.x - enemies[j]->pos.x,
 											  enemies[i]->pos.y - enemies[j]->pos.y, };
 
-				enemies[i]->Knockback(dt, enemyKnockback, knockbackDir);
+				enemies[i]->ApplyForce(enemyKnockback, knockbackDir);
 			}
 		}
 

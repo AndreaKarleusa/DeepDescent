@@ -41,6 +41,19 @@ void Enemy::Update(const float dt, const Vector2& playerPos){
 	vel.x -= fr * vel.x * dt;
 	vel.y -= fr * vel.y * dt;
 
+	if (knockback) {
+		vel.x += knockback * -dir.x * dt;
+		vel.y += knockback * -dir.y * dt;
+
+		knockback = 0.0f;
+	} if (forceAmout) {
+		vel.x += forceAmout * forceDirection.x * dt;
+		vel.y += forceAmout * forceDirection.y * dt;
+
+		forceAmout= 0.0f;
+		forceDirection = { 0.0f, 0.0f };
+	}
+
 	pos.x += vel.x;
 	pos.y += vel.y;
 
@@ -48,7 +61,7 @@ void Enemy::Update(const float dt, const Vector2& playerPos){
 	hitbox.y = pos.y;
 }
 
-void Enemy::Damage(const float& dt, const float& damage) {
+void Enemy::Damage(const float& damage) {
 	health -= damage;
 }
 
@@ -56,7 +69,11 @@ Vector2 Enemy::GetDirection() {
 	return dir;
 }
 
-void Enemy::Knockback(const float dt, const float& knockback, const Vector2& knockbackDir) {
-	vel.x += knockback * knockbackDir.x * dt;
-	vel.y += knockback * knockbackDir.y * dt;
+void Enemy::Knockback(const float& knockbackAmount) {
+	knockback = knockbackAmount;
+}
+
+void Enemy::ApplyForce(const float& amout, const Vector2& direction) {
+	forceAmout = amout;
+	forceDirection = direction;
 }

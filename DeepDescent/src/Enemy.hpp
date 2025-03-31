@@ -13,6 +13,7 @@ public:
 	Vector2 vel = { 0.0f, 0.0f };
 	const float acc = 70.0f;
 	const float fr = 0.85f;
+	float knockback = 0;
 
 	const float moveDelay = 0.75f;
 	Timer movementTimer = Timer(moveDelay);
@@ -21,6 +22,9 @@ public:
 	const float MAX_HEALTH = 2.0f;
 	float health = MAX_HEALTH;
 	const float damage = 1.0f;
+
+	float forceAmout = 0;
+	Vector2 forceDirection = { 0.0f, 0.0f };
 public:
 	Enemy();
 
@@ -29,7 +33,9 @@ public:
 
 	void Spawn(const Vector2& position);
 	void Attack(); 
-	void Damage(const float& dt, const float& damage);
+	void Damage(const float& damage);
 	Vector2 GetDirection(); 
-	void Knockback(const float dt, const float& knockback, const Vector2& knockbackDir);
+
+	void Knockback(const float& knockbackAmount);
+	void ApplyForce(const float& amout, const Vector2& direction);
 };

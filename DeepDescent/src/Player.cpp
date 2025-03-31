@@ -117,7 +117,7 @@ void Player::Update(const float dt, Tile tiles[MAP_SIZE][MAP_SIZE], std::vector<
 
 		Vector2 enemyDir = enemy->GetDirection();
 		Vector2 knockbackDir = { -enemyDir.x, -enemyDir.y };
-		enemy->Knockback(dt, toolKnockback, knockbackDir);
+		enemy->Knockback(toolKnockback);
 
 		vel.x += knockback * enemyDir.x * dt;
 		vel.y += knockback * enemyDir.y * dt;
@@ -156,10 +156,8 @@ void Player::HandleShovel(const Vector2& mousePos, const float& mouseDist, std::
 	
 	for (auto& enemy : enemies) {
 		if (CheckCollisionPointRec(mousePos, enemy->hitbox)) {
-			Vector2 knockbackDir = { -enemy->GetDirection().x, -enemy->GetDirection().y };
-
-			enemy->Damage(dt, shovelDamage);
-			enemy->Knockback(dt, toolKnockback, knockbackDir);
+			enemy->Damage(shovelDamage);
+			enemy->Knockback(toolKnockback);
 		}
 	}
 }
