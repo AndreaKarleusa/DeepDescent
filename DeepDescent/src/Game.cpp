@@ -184,13 +184,13 @@ void Game::DeathScreen() {
 				60, TEXT_COLOR);
 
 			DrawText(scoreText.c_str(),
-				screenCenter.x - MeasureText(scoreText.c_str(), 20) / 2,
+				screenCenter.x - MeasureText(scoreText.c_str(), 25) / 2,
 				screenCenter.y + 0 + textMargin,
-				20, TEXT_COLOR);
+				25, TEXT_COLOR);
 			DrawText(highscoreText.c_str(),
-				screenCenter.x - MeasureText(highscoreText.c_str(), 20) / 2,
-				screenCenter.y + 20 + textMargin,
-				20, TEXT_COLOR);
+				screenCenter.x - MeasureText(highscoreText.c_str(), 25) / 2,
+				screenCenter.y + 25 + textMargin,
+				25, TEXT_COLOR);
 
 			DrawText("press <space> to restart",
 				screenCenter.x - MeasureText("press <space> to restart", 20) / 2,

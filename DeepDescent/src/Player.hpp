@@ -17,7 +17,11 @@ class Player
 {
 public:
 	Texture2D playerSprite;
-	Rectangle hitbox;
+	Rectangle colissionHitbox;
+	struct Circle {
+		float r = 20.0f;
+		Vector2 pos = { 0,0 };
+	} damageHitbox;
 
 	Vector2 position;
 	Vector2 dir;
@@ -27,7 +31,7 @@ public:
 	const float fr = 4.0f;
 	const float knockback = 20.0f;
 
-	const int MAX_HEALTH = 5;
+	const int MAX_HEALTH = 100;
 	const int MAX_ENERGY = 5;
 	int health = MAX_HEALTH;
 	int energy = MAX_ENERGY;

@@ -50,10 +50,14 @@ void Spawner::Update(const float dt, const Vector2& playerPos) {
 
 	for (int i = 0; i < enemies.size(); i++) {
 		for (int j = 0; j < enemies.size(); j++) {
+			auto& enemy1 = enemies[i];
+			auto& enemy2 = enemies[j];
+
+
 			if (enemies[i] == enemies[j])
 				continue;
 
-			if (CheckCollisionRecs(enemies[i]->hitbox, enemies[j]->hitbox)) {
+			if (CheckCollisionCircles(enemy1->hitbox.pos, enemy1->hitbox.r, enemy2->hitbox.pos, enemy2->hitbox.r)) {
 
 				const Vector2 knockbackDir = {enemies[i]->pos.x - enemies[j]->pos.x,
 											  enemies[i]->pos.y - enemies[j]->pos.y, };

@@ -5,16 +5,13 @@ Enemy::Enemy() {}
 
 void Enemy::Draw(const Texture2D& spriteSheet) const {
 	DrawTextureRec(spriteSheet, spriteRect, pos, WHITE);
+
+
+	DrawCircle(hitbox.pos.x, hitbox.pos.y, hitbox.r, Color{ 255,0,0,150 });
 }
 
 void Enemy::Spawn(const Vector2& position) {
 	pos = position;
-	spriteRect = {
-		0, 0, TILE_SIZE, TILE_SIZE
-	};
-	hitbox = { pos.x, pos.y,
-			   spriteRect.width, spriteRect.height
-	};
 	movementTimer.Start();
 }
 
@@ -57,8 +54,8 @@ void Enemy::Update(const float dt, const Vector2& playerPos){
 	pos.x += vel.x;
 	pos.y += vel.y;
 
-	hitbox.x = pos.x;
-	hitbox.y = pos.y;
+	hitbox.pos.x = pos.x + spriteRect.width / 2;
+	hitbox.pos.y = pos.y + spriteRect.height / 2;
 }
 
 void Enemy::Damage(const float& damage) {

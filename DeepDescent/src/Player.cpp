@@ -27,6 +27,9 @@ void Player::Draw()
 {
 	DrawTexture(playerSprite, position.x, position.y, WHITE);
 	DrawTextureRec(toolsSprite, toolRects[tool], toolPos, toolOpacity);
+
+	DrawRectangle(colissionHitbox.x, colissionHitbox.y, colissionHitbox.width, colissionHitbox.height, Color{ 255,0,0,150 });
+	DrawCircle(damageHitbox.pos.x, damageHitbox.pos.y, damageHitbox.r, Color{ 0,0,255,150 });
 }
 
 void Player::Update(const float dt, Tile tiles[MAP_SIZE][MAP_SIZE], std::vector<Enemy*>& enemies, const Camera2D& cam)
@@ -90,7 +93,10 @@ void Player::Update(const float dt, Tile tiles[MAP_SIZE][MAP_SIZE], std::vector<
 	};
 	float mouseDist = sqrt(mouseDistVec.x*mouseDistVec.x + mouseDistVec.y*mouseDistVec.y);
 
-	hitbox = { position.x, position.y, (float)playerSprite.width, (float)playerSprite.height };
+	//hitbox = { position.x, position.y, (float)playerSprite.width, (float)playerSprite.height };
+	colissionHitbox = { position.x, position.y, (float)playerSprite.width, (float)playerSprite.height };
+	damageHitbox.pos = {position.x + playerSprite.width/2, position.y + playerSprite.height/2};
+
 
 	if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)) {
 		tool = (Tool)(!tool);
@@ -107,7 +113,7 @@ void Player::Update(const float dt, Tile tiles[MAP_SIZE][MAP_SIZE], std::vector<
 
 	for (auto& enemy : enemies) {
 
-		if (!CheckCollisionRecs(hitbox, enemy->hitbox))
+		if (!CheckCollisionCircles(damageHitbox.pos, damageHitbox.r, enemy->hitbox.pos, enemy->hitbox.r))
 			continue;
 
 		if (!mercyWindow.running) {
@@ -155,7 +161,7 @@ void Player::HandleShovel(const Vector2& mousePos, const float& mouseDist, std::
 		return;
 	
 	for (auto& enemy : enemies) {
-		if (CheckCollisionPointRec(mousePos, enemy->hitbox)) {
+		if (CheckCollisionPointCircle(mousePos, enemy->hitbox.pos, enemy->hitbox.r)) {
 			enemy->Damage(shovelDamage);
 			enemy->Knockback(toolKnockback);
 		}
@@ -181,7 +187,7 @@ std::vector<Tile> Player::CheckCollision(Tile tiles[MAP_SIZE][MAP_SIZE])
 
 	// TODO: clean up this hitbox code
 	std::vector<Tile> collisionTiles;
-	hitbox = { position.x, position.y, (float)playerSprite.width, (float)playerSprite.height };
+	colissionHitbox = { position.x, position.y, (float)playerSprite.width, (float)playerSprite.height };
 
 	for (int i = -1; i <= 1; i++) {
 	for (int j = -1; j <= 1; j++) {
@@ -190,7 +196,7 @@ std::vector<Tile> Player::CheckCollision(Tile tiles[MAP_SIZE][MAP_SIZE])
 		auto& tile = tiles[y + i][x + j];
 		if (tile.isEmpty) { continue; }
 
-		if (CheckCollisionRecs(hitbox, tile.collisionRec)) {
+		if (CheckCollisionRecs(colissionHitbox, tile.collisionRec)) {
 			collisionTiles.push_back(tile);
 
 			if (tile.isStaircase && tile.health <= 0) {

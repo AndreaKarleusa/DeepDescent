@@ -5,8 +5,11 @@
 
 class Enemy {
 public:
-	Rectangle spriteRect;
-	Rectangle hitbox;
+	Rectangle spriteRect = {0, 0, TILE_SIZE, TILE_SIZE};
+	struct Circle {
+		float r = 18.0f;
+		Vector2 pos = {0, 0};
+	} hitbox;
 
 	Vector2 pos;
 	Vector2 dir = { 0.0f, 0.0f };
