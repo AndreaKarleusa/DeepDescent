@@ -28,8 +28,13 @@ void Player::Draw()
 	DrawTexture(playerSprite, position.x, position.y, WHITE);
 	DrawTextureRec(toolsSprite, toolRects[tool], toolPos, toolOpacity);
 
-	DrawRectangle(colissionHitbox.x, colissionHitbox.y, colissionHitbox.width, colissionHitbox.height, Color{ 255,0,0,150 });
-	DrawCircle(damageHitbox.pos.x, damageHitbox.pos.y, damageHitbox.r, Color{ 0,0,255,150 });
+	for (const auto& mark : markers) {
+		mark->Draw();
+	}
+
+	// DEBUG ONLY
+	//DrawRectangle(colissionHitbox.x, colissionHitbox.y, colissionHitbox.width, colissionHitbox.height, Color{ 255,0,0,150 });
+	//DrawCircle(damageHitbox.pos.x, damageHitbox.pos.y, damageHitbox.r, Color{ 0,0,255,150 });
 }
 
 void Player::Update(const float dt, Tile tiles[MAP_SIZE][MAP_SIZE], std::vector<Enemy*>& enemies, const Camera2D& cam)
@@ -116,9 +121,12 @@ void Player::Update(const float dt, Tile tiles[MAP_SIZE][MAP_SIZE], std::vector<
 		if (!CheckCollisionCircles(damageHitbox.pos, damageHitbox.r, enemy->hitbox.pos, enemy->hitbox.r))
 			continue;
 
+
 		if (!mercyWindow.running) {
 			health -= enemy->damage;
 			mercyWindow.Start();
+
+			markers.push_back(new StatusMarker("-1", RAYWHITE));
 		}
 
 		Vector2 enemyDir = enemy->GetDirection();
@@ -129,6 +137,15 @@ void Player::Update(const float dt, Tile tiles[MAP_SIZE][MAP_SIZE], std::vector<
 		vel.y += knockback * enemyDir.y * dt;
 	}
 	if (mercyWindow.Check()) { mercyWindow.Stop(); }
+
+	for (int i = 0; i < markers.size(); i++) {
+		markers[i]->Update(dt, position);
+
+		if (markers[i]->IsInvisible()) {
+			delete markers[i];
+			markers.erase(markers.begin() + i);
+		}
+	}
 }
 
 void Player::HandlePickaxe(const Vector2& mousePos, const float& mouseDist, Tile tiles[MAP_SIZE][MAP_SIZE]) {
@@ -176,6 +193,7 @@ void Player::Spawn(const Vector2& spawnPos)
 void Player::ResetStats() {
 	health = MAX_HEALTH;
 	energy = MAX_ENERGY;
+	ClearMarks();
 }
 
 // OPTIMIZATION:
@@ -206,4 +224,10 @@ std::vector<Tile> Player::CheckCollision(Tile tiles[MAP_SIZE][MAP_SIZE])
 		}
 	}}
 	return collisionTiles;
+}
+void Player::ClearMarks() {
+	for (int i = 0; i < markers.size(); i++) {
+		delete markers[i];
+		markers.erase(markers.begin() + i);
+	}
 }

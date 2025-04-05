@@ -143,6 +143,7 @@
     <ClInclude Include="src\Player.hpp" />
     <ClInclude Include="src\Settings.hpp" />
     <ClInclude Include="src\Spawner.hpp" />
+    <ClInclude Include="src\StatusMarker.hpp" />
     <ClInclude Include="src\Timer.hpp" />
   </ItemGroup>
   <ItemGroup>

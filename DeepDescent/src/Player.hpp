@@ -4,6 +4,7 @@
 #include "Map.hpp"
 #include "Enemy.hpp"
 #include "Timer.hpp"
+#include "StatusMarker.hpp"
 #include <vector>
 
 enum Tool {
@@ -12,7 +13,6 @@ enum Tool {
 };
 
 // IDEA: gain energy/health each 10 levels ???
-// TODO: make mining when you hold the mouse down (add a mining timer)
 class Player
 {
 public:
@@ -31,14 +31,13 @@ public:
 	const float fr = 4.0f;
 	const float knockback = 20.0f;
 
-	const int MAX_HEALTH = 100;
+	const int MAX_HEALTH = 5;
 	const int MAX_ENERGY = 5;
 	int health = MAX_HEALTH;
 	int energy = MAX_ENERGY;
 
 	Timer mercyWindow = Timer(1.6); // duration of invincibility when hit
 	Timer miningTimer = Timer(0.4);
-	//Timer energyRecharge = Timer(0.6);
 
 	Texture2D toolsSprite;
 	Rectangle toolRects[2] = {
@@ -57,6 +56,11 @@ public:
 	const float pickaxeDamage = 1.0f;
 	const float shovelDamage= 1.0f;
 
+	// TODO: pass a drawing function to the draw UI
+	// so it can always render the marks on top
+	// of everything
+	std::vector<StatusMarker*> markers;
+
 	bool foundStaircase = false;
 
 public:
@@ -66,8 +70,6 @@ public:
 	void LoadAssets();
 	void Draw();
 
-	// IDEA: pass in the map and spawner objects
-	//		 to make the arguments cleaner
 	void Update(const float dt,
 				Tile tiles[MAP_SIZE][MAP_SIZE], 
 				std::vector<Enemy*>& enemies,
@@ -80,4 +82,5 @@ public:
 	void HandleShovel(const Vector2& mousePos, const float& mouseDist, std::vector<Enemy*> enemies, const float& dt);
 
 	std::vector<Tile> CheckCollision(Tile tiles[MAP_SIZE][MAP_SIZE]);
+	void ClearMarks();
 };

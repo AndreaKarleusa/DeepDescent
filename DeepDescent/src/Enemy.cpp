@@ -6,8 +6,8 @@ Enemy::Enemy() {}
 void Enemy::Draw(const Texture2D& spriteSheet) const {
 	DrawTextureRec(spriteSheet, spriteRect, pos, WHITE);
 
-
-	DrawCircle(hitbox.pos.x, hitbox.pos.y, hitbox.r, Color{ 255,0,0,150 });
+	// ONLY FOR DEBUG
+	//DrawCircle(hitbox.pos.x, hitbox.pos.y, hitbox.r, Color{ 255,0,0,150 });
 }
 
 void Enemy::Spawn(const Vector2& position) {
