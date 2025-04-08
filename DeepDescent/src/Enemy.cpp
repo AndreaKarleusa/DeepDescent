@@ -3,6 +3,9 @@
 
 Enemy::Enemy() {}
 
+// TODO:
+// The spawner takes care of the UI drawing because this is a mess
+
 void Enemy::Draw(const Texture2D& spriteSheet) const {
 	DrawTextureRec(spriteSheet, spriteRect, pos, WHITE);
 
@@ -60,6 +63,7 @@ void Enemy::Update(const float dt, const Vector2& playerPos){
 
 void Enemy::Damage(const float& damage) {
 	health -= damage;
+	std::string markerValue = "-" + std::to_string(damage);
 }
 
 Vector2 Enemy::GetDirection() {

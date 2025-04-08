@@ -1,5 +1,4 @@
 #pragma once
-#include "raylib.h"
 #include "Settings.hpp"
 #include "Map.hpp"
 #include "Enemy.hpp"
@@ -59,7 +58,7 @@ public:
 	// TODO: pass a drawing function to the draw UI
 	// so it can always render the marks on top
 	// of everything
-	std::vector<StatusMarker*> markers;
+	MarkerManager markerManager = MarkerManager();
 
 	bool foundStaircase = false;
 
@@ -82,5 +81,4 @@ public:
 	void HandleShovel(const Vector2& mousePos, const float& mouseDist, std::vector<Enemy*> enemies, const float& dt);
 
 	std::vector<Tile> CheckCollision(Tile tiles[MAP_SIZE][MAP_SIZE]);
-	void ClearMarks();
 };

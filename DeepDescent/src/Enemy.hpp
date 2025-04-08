@@ -1,7 +1,11 @@
 #pragma once
 #include "Settings.hpp"
 #include "Timer.hpp"
-#include <raylib.h>
+#include "StatusMarker.hpp"
+#include "raylib.h"
+
+#include <vector>
+#include <string>
 
 class Enemy {
 public:
@@ -16,7 +20,7 @@ public:
 	Vector2 vel = { 0.0f, 0.0f };
 	const float acc = 70.0f;
 	const float fr = 0.85f;
-	float knockback = 0;
+	float knockback = 0; 
 
 	const float moveDelay = 0.75f;
 	Timer movementTimer = Timer(moveDelay);
@@ -34,8 +38,7 @@ public:
 	void Draw(const Texture2D& spriteSheet) const;
 	void Update(const float dt, const Vector2& playerPos);
 
-	void Spawn(const Vector2& position);
-	void Attack(); 
+	void Spawn(const Vector2& position); 
 	void Damage(const float& damage);
 	Vector2 GetDirection(); 
 
