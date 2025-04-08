@@ -1,6 +1,7 @@
 #pragma once
 #include "Enemy.hpp"
 #include "Timer.hpp"
+#include "StatusMarker.hpp"
 #include "raylib.h"
 #include <vector>
 
@@ -21,12 +22,15 @@ public:
 
 	float enemyKnockback = 0.1f;
 
+
 	Rectangle spawnZones[4] = {
 		{0, -TILE_SIZE*2, TILE_SIZE * MAP_SIZE, TILE_SIZE},		  // top
 		{TILE_SIZE*MAP_SIZE+TILE_SIZE, 0, TILE_SIZE, TILE_SIZE * MAP_SIZE}, // right
 		{0, TILE_SIZE*MAP_SIZE+TILE_SIZE, TILE_SIZE * MAP_SIZE, TILE_SIZE}, // bottom
 		{-TILE_SIZE*2, 0, TILE_SIZE, TILE_SIZE*MAP_SIZE},			  // left
 	};
+
+	MarkerManager markerManager = MarkerManager();
 
 public:
 	Spawner();

@@ -4,6 +4,7 @@
 #include "Enemy.hpp"
 #include "Timer.hpp"
 #include "StatusMarker.hpp"
+#include "Spawner.hpp"
 #include <vector>
 
 enum Tool {
@@ -71,14 +72,14 @@ public:
 
 	void Update(const float dt,
 				Tile tiles[MAP_SIZE][MAP_SIZE], 
-				std::vector<Enemy*>& enemies,
+				Spawner& spawner,
 				const Camera2D& cam);
 
 	void Spawn(const Vector2& spawnPos);
 	void ResetStats();
 	
 	void HandlePickaxe(const Vector2& mousePos, const float& mouseDist, Tile tiles[MAP_SIZE][MAP_SIZE]);
-	void HandleShovel(const Vector2& mousePos, const float& mouseDist, std::vector<Enemy*> enemies, const float& dt);
+	void HandleShovel(const Vector2& mousePos, const float& mouseDist, Spawner& spawner, const float& dt);
 
 	std::vector<Tile> CheckCollision(Tile tiles[MAP_SIZE][MAP_SIZE]);
 };

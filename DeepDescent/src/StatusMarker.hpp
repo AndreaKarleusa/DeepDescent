@@ -3,20 +3,20 @@
 
 #include <vector>
 #include <string>
+#include <iostream>
 
 class StatusMarker {
 public:
 	Vector2 pos = { 0,0 };
-	Vector2 dir = { 0,-1 };
-	Vector2 vel = { 0,0 };
-	const float acc = 40.0f;
-	const float fr = 0.05f;
+	Vector2 dir = { 0.0f,-1.0f };
+	Vector2 vel = { 40.0f, 40.0f };
+	const float fr = 0.06f;
 	
 	int size = 22;
 	std::string value = "n/a";
 
-	Color color = { 255, 255, 255, 255 };
-	const int alphaChange = 3;
+	Color color = { 255, 255, 255, 0 };
+	const int alphaChange = 4;
 public:
 	inline StatusMarker(const std::string& value, const Color& color, const Vector2& pos) {
 		this->value = value;
@@ -36,12 +36,8 @@ public:
 		DrawText(value.c_str(), pos.x, pos.y, size, color);
 	}
 	inline void Update(const float& dt) {
-		
-		vel.x += dir.x * acc * dt;
-		vel.y += dir.y * acc * dt;
-
-		vel.x -= vel.x * fr * dt;
-		vel.y -= vel.y * fr * dt;
+		vel.x *= dir.x * fr * dt;
+		vel.y *= dir.y * fr * dt;
 
 		// TODO: change position based on the player/entity
 		pos.x += vel.x;
@@ -51,24 +47,25 @@ public:
 		// the time. We can get that by calculating how
 		// long it takes to stop, dividing it by 255 and 60 and
 		// adding that amout to the alpha each frame
-		if (color.a > 0) {
-			color.a -= alphaChange;
+		if (color.a + alphaChange < 255) {
+			color.a += alphaChange;
 		}
 	}
 	inline bool IsInvisible() const {
-		return (color.a <= 0);
+		return (color.a + alphaChange >= 255);
 	}
 };
 
 class MarkerManager{
 public:
-	Color statusColor = { 246, 214, 189, 255 };
+	Color statusColor = { 246, 214, 189, 0 };
 
 	std::vector<StatusMarker> markers;
 public:
 	inline MarkerManager() {}
 	inline MarkerManager(const Color& color) {
 		statusColor = color;
+		statusColor.a = 0;
 	}
 
 	inline void Draw() const {
@@ -85,6 +82,8 @@ public:
 			if (marker.IsInvisible()) 
 				markers.erase(markers.begin() + markerIndex);
 
+			std::cout << "size: " << markers.size() << std::endl;
+
 			markerIndex++;
 		}
 	}
@@ -96,5 +95,10 @@ public:
 
 	inline void ClearMarkers(){
 		markers.clear();
+	}
+
+	inline void SetColor(const Color& color) {
+		statusColor = color;
+		statusColor.a = 0;
 	}
 };

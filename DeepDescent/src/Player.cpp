@@ -34,7 +34,7 @@ void Player::Draw()
 	//DrawCircle(damageHitbox.pos.x, damageHitbox.pos.y, damageHitbox.r, Color{ 0,0,255,150 });
 }
 
-void Player::Update(const float dt, Tile tiles[MAP_SIZE][MAP_SIZE], std::vector<Enemy*>& enemies, const Camera2D& cam)
+void Player::Update(const float dt, Tile tiles[MAP_SIZE][MAP_SIZE], Spawner& spawner, const Camera2D& cam)
 {
 	// player movement
 	dir.x = IsKeyDown(KEY_D) - IsKeyDown(KEY_A);
@@ -110,10 +110,10 @@ void Player::Update(const float dt, Tile tiles[MAP_SIZE][MAP_SIZE], std::vector<
 	if (tool == Pickaxe)
 		HandlePickaxe(mousePos, mouseDist, tiles);
 	else if (tool == Shovel)
-		HandleShovel(mousePos, mouseDist, enemies, dt);
+		HandleShovel(mousePos, mouseDist, spawner, dt);
 
 
-	for (auto& enemy : enemies) {
+	for (auto& enemy : spawner.enemies) {
 
 		if (!CheckCollisionCircles(damageHitbox.pos, damageHitbox.r, enemy->hitbox.pos, enemy->hitbox.r))
 			continue;
@@ -160,17 +160,20 @@ void Player::HandlePickaxe(const Vector2& mousePos, const float& mouseDist, Tile
 	}
 }
 
-void Player::HandleShovel(const Vector2& mousePos, const float& mouseDist, std::vector<Enemy*> enemies, const float& dt ) {
+void Player::HandleShovel(const Vector2& mousePos, const float& mouseDist, Spawner& spawner, const float& dt ) {
 	if (mouseDist > toolRange)
 		return;
 
 	if (!IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
 		return;
 	
-	for (auto& enemy : enemies) {
+	for (auto& enemy : spawner.enemies) {
 		if (CheckCollisionPointCircle(mousePos, enemy->hitbox.pos, enemy->hitbox.r)) {
+			std::string markerText = "-" + std::to_string(shovelDamage).substr(0, 3);
+
 			enemy->Damage(shovelDamage);
 			enemy->Knockback(toolKnockback);
+			spawner.markerManager.AddMarker(markerText, enemy->pos);
 		}
 	}
 }

@@ -98,7 +98,7 @@ void Game::Update()
 	HandleFullscreen();
 	float dt = GetFrameTime();
 
-	player.Update(dt, map.tiles, spawner.enemies, camera);
+	player.Update(dt, map.tiles, spawner, camera);
 	map.Update();
 	spawner.Update(dt, player.position);
 

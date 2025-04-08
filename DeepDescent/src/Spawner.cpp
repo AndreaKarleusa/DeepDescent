@@ -4,7 +4,10 @@
 #include <algorithm>
 using namespace std;
 
-Spawner::Spawner() { spawnTimer.Start(); }
+Spawner::Spawner() { 
+	spawnTimer.Start();
+	markerManager.SetColor({ 195, 163, 138, 255 });
+}
 
 void Spawner::LoadAssets() {
 	Image enemiesImg = LoadImage("assets/enemies.png");
@@ -15,6 +18,8 @@ void Spawner::LoadAssets() {
 void Spawner::Draw() {
 	for (const auto& enemy : enemies)
 		enemy->Draw(spriteSheet);
+
+	markerManager.Draw();
 }
 
 void Spawner::Update(const float dt, const Vector2& playerPos) {
@@ -67,6 +72,8 @@ void Spawner::Update(const float dt, const Vector2& playerPos) {
 		}
 
 	}
+
+	markerManager.Update(dt);
 
 }
 
